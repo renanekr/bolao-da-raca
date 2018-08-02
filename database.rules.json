@@ -1,0 +1,21 @@
+{"rules":
+  {
+    ".read": "auth !== null",
+    ".write": "auth !== null",
+    "admin": {
+      ".write": "root.child('users').child(auth.uid).child('admin').val() === true"
+    },
+    "tournament": {
+      ".write": "root.child('users').child(auth.uid).child('admin').val() === true"
+    },
+    "users": {
+      "$user": {
+        ".read": "auth !== null",
+        ".write": "root.child('users').child(auth.uid).child('admin').val() === true || auth.uid === $user",
+        "email": {
+          ".read": "root.child('users').child(auth.uid).child('admin').val() === true || auth.uid === $user"
+        }
+      }
+    }
+  }
+}

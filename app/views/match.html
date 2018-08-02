@@ -1,0 +1,77 @@
+<div class="container">
+		<div class="row">
+			<div class="col-xs-12" ng-show="matches.uploadForm">
+				<h4>Importar partidas</h4>
+				<form name="matchesForm" ng-submit = "matches.upload(matches.form.list, matchesForm)">
+					<div class="form-group">
+						<label>Lista de jogos</label>
+						<textarea 
+							required
+							class="form-control" 
+							name="matchList" 
+							id="matchList" 
+							cols="30" 
+							rows="10"
+							placeholder="Formato: Grupo; Rodada; Data; Código Casa; Código Visitante"
+							ng-model="matches.form.list"></textarea>
+					</div>
+					<p class="help-block" ng-show="matchesForm.matchList.$touched && matchesForm.matchList.$invalid">Copie dos dados da Partida!</p>
+					<button class="btn btn-primary" type="submit" ng-disabled="matchesForm.$invalid">Importar</button>
+					<button class="btn btn-default" type="reset" ng-click="matches.uploadForm=false; matches.reset(matchesForm)">Cancelar</button>
+				</form>
+			</div>
+			<div class="col-xs-12" ng-hide="matches.uploadForm">
+				<form>
+					<div class="form-group">
+						<label for="filter">Filtro</label>
+						<input type="text" class="form-control" name="filter" ng-model = "matches.table.filter" placeholder="Digite o nome ou apelido da equipe"></div>
+				</form>
+				<table class="table table-hover">
+					<thead>
+						<th class="text-center col-xs-2" ng-click="matches.table.sortColumn = 'group'; matches.table.reverse = !matches.table.reverse">
+							<span class="glyphicon glyphicon-triangle-bottom" ng-show="matches.table.sortColumn == 'group' && matches.table.reverse"></span>
+							<span class="glyphicon glyphicon-triangle-top" ng-show="matches.table.sortColumn == 'group' && !matches.table.reverse"></span>
+							Grupo</th>
+						<th class="text-center col-xs-2">Rodada</th>
+						<th class="text-center col-xs-3" ng-click="matches.table.sortColumn = 'datetime'; matches.table.reverse = !matches.table.reverse">
+							<span class="glyphicon glyphicon-triangle-bottom" ng-show="matches.table.sortColumn == 'datetime' && matches.table.reverse"></span>
+							<span class="glyphicon glyphicon-triangle-top" ng-show="matches.table.sortColumn == 'datetime' && !matches.table.reverse"></span>
+							Data</th>
+						<th class="text-center col-xs-3">Equipes</th>
+						<th class="text-center col-xs-2">Placar</th>
+					</thead>
+					<tr class="text-center" ng-repeat="match in matches.data.matches | orderBy: matches.table.sortColumn : matches.table.reverse | filter: matches.table.filter">
+						<td>{{match.group}}</td>
+						<td>{{match.round}}</td>
+						<td class="text-center">{{match.datetime | date : 'dd/MM H:mm'}}</td>
+						<td class="text-center">{{match.home.longName}} x {{match.away.longName}}</td>
+						<td class="text-center">
+							<div ng-hide="matches.table.editResult == match.$id" ng-click="matches.table.editResult = match.$id">
+								<span ng-show="match.result.home">{{match.result.home}}x{{match.result.away}}</span>
+								<span class="glyphicon glyphicon-pencil"></span>
+							</div>
+							<form 
+								ng-if="matches.table.editResult == match.$id" 
+								name="resultForm" 
+								class="form-inline" 
+								ng-submit="matches.updateResult(match, matches.table.result[match.$id])">
+								<div class="form-group">
+									<input 
+										autofocus 
+										eb-focus = "matches.table.editResult === match.$id"
+										size="3"
+										type="text" 
+										class="form-control"
+										ng-model="matches.table.result[match.$id]">
+									<a href ng-click="matches.table.editResult = false">Cancelar</a>
+								</div>
+							</form>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="col-xs-12" ng-hide="matches.uploadForm">
+				<a href ng-click="matches.uploadForm = true" ><span class="glyphicon glyphicon-plus"></span> Importar partidas...</a>
+			</div>
+		</div>
+	</div>

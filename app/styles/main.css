@@ -1,0 +1,181 @@
+/* OWN STYLES */
+
+.content, .inner-content {
+
+  margin-top: 30px;
+  min-height: 80vh;
+  height: auto;
+  margin-bottom: 30px;
+}
+
+
+.list-group-item > .list-edit-controls, .player .glyphicon-remove {
+  display: none;
+
+}
+
+.list-group-item:hover > .list-edit-controls, .player:hover .glyphicon-remove {
+  display: inline-block;
+}
+
+
+tr .glyphicon-pencil {
+  display: none;
+}
+
+tr:hover .glyphicon-pencil {
+  display: inline;
+}
+
+.flag-icon {
+  border: 1px solid #eee;
+}
+
+.match-block {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 30px;
+  margin-top: 30px;
+}
+
+.bet-input {
+  text-align: center;
+}
+
+.player-entry {
+  line-height: 2em;
+}
+
+.player-position {
+  background:none repeat scroll 0 0 #C0C0C0;
+  color:#FFFFFF;
+  display:inline-block;
+  /* float:left; */
+  font-size:17px;
+  font-weight:bold;
+  height:28px;
+  line-height:28px;
+  text-align:center;
+  width:28px;
+  -moz-border-radius:21px;-webkit-border-radius:21px;border-radius:21px;
+}
+
+.match-entry {
+  margin-bottom: 5px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+  line-height: 1.5em;
+}
+
+.match-entry small {
+  /* color: #888; */
+  color: #C0C0C0;
+}
+
+.player-bold {
+  font-weight: bold;
+}
+
+.panel-body .btn {
+  margin-top: 15px;
+}
+
+.panel-body .empty-state-message {
+  color: #888;
+}
+
+.point-label {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.eb-footer {
+  height: 100px;
+  padding-top: 19px;
+  color: #777;
+  border-top: 1px solid #e5e5e5;
+  margin-bottom: 10px;
+  background: #fcfcfc;
+}
+
+.user-form {
+  margin-top: 25vh;
+}
+
+.promobox {
+  margin-bottom: 35px;
+  padding: 0px 30px 20px 30px;
+  border-radius: 10px;
+}
+
+
+.browsehappy {
+  margin: 0.2em 0;
+  background: #ccc;
+  color: #000;
+  padding: 0.2em 0;
+}
+
+body {
+  padding: 0;
+}
+
+/* Everything but the jumbotron gets side spacing for mobile first views */
+.header,
+.marketing,
+.footer {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Custom page header */
+.header {
+  margin-bottom: 10px;
+}
+/* Make the masthead heading the same height as the navigation */
+.header h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 40px;
+  padding-bottom: 19px;
+}
+
+/* Custom page footer */
+.footer {
+  padding-top: 19px;
+  color: #777;
+  border-top: 1px solid #e5e5e5;
+  margin-bottom: 30px;
+}
+
+.container-narrow > hr {
+  margin: 30px 0;
+}
+
+
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+  .container {
+    max-width: 960px;
+  }
+
+  /* Remove the padding we set earlier */
+  .header,
+  .marketing,
+  .footer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  /* Space out the masthead */
+  .header {
+    margin-bottom: 30px;
+  }
+  /* Remove the bottom border on the jumbotron for visual effect */
+  .jumbotron {
+    border-bottom: 0;
+  }
+}
+
+.img-responsive {
+  margin: 0 auto;
+}

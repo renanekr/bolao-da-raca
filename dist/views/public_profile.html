@@ -1,0 +1,37 @@
+<div class="container">
+	<div class="row">
+		<div class="col-xs-12">
+			<h1>{{public.user.name}} <small>{{public.user.company}}</small></h1>
+			
+			<h4 ng-hide="public.now < public.start || !public.user.bets.winner || !public.user.bets.topScorer" ><span class="flag-icon" ng-class="{'flag-icon-{{public.user.bets.winner.ISO}}': true}"></span> {{public.user.bets.winner.longName}} | <span class="glyphicon glyphicon-star-empty"></span> {{public.user.bets.topScorer}}</h4>
+			<!-- <h4 ng-hide="public.user.bets.winner || public.user.bets.topScorer"><small>Nenhum favorito informado</small></h4> -->
+		</div>
+	</div>
+	<br>
+	<div class="row">
+		<div class="col-xs-12 col-md-8">
+			<h2>Extrato dos Palpites <span class="label label-success pull-right">{{public.user.score}} pontos</span></h2>
+			<hr>
+			<h4 ng-repeat="match in public.matches | orderBy: 'datetime' : true | result as result" class="match-entry">
+				<span class="flag-icon" ng-class="{'flag-icon-{{match.home.ISO}}': true}"></span>
+				<a ui-sref="app.match({matchId: match.$id})">	
+					<span class="hidden-xs">{{match.home.longName}} x {{match.away.longName}}</span>
+					<span class="visible-xs-inline">{{match.home.shortName}} x {{match.away.shortName}}</span>
+				</a>
+				<span class="flag-icon" ng-class="{'flag-icon-{{match.away.ISO}}': true}"></span>
+				
+				<span class="label label-success pull-right" ng-show="public.user.bets.matches[match.$id].points"><span class="glyphicon glyphicon-ok"></span> {{public.user.bets.matches[match.$id].points}} pontos</span>
+
+				<span class="label label-default pull-right" ng-hide="public.user.bets.matches[match.$id].points || !match.result"><span class="glyphicon glyphicon-remove"></span> 0 pontos</span>
+
+				<span ng-show="!match.result" class="pull-right"><small>Resultado não cadastrado.</small></span>
+
+				<small>
+					<div><b>{{match.result.home}}x{{match.result.away}}</b>
+					(Palpite: {{public.user.bets.matches[match.$id].home}}x{{public.user.bets.matches[match.$id].away}})</div>
+				</small>			
+			</h4>
+			<h4><small ng-hide="result.length">Pontos marcados nos jogos serão mostrados aqui.</small></h4>
+		</div>
+	</div>
+</div>
