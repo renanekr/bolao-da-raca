@@ -1,5 +1,5 @@
 {
-  "name": "bolaodaraca",
+  "name": "bolao-da-raca",
   "version": "0.1",
   "dependencies": {
     "angular": "^1.4.0",
@@ -7,13 +7,13 @@
     "angular-messages": "^1.4.0",
     "angular-resource": "^1.4.0",
     "angular-sanitize": "^1.4.0",
-    "angular-ui-router": "ui-router#^0.3.1",
+    "angular-ui-router": "ui-router#^0.3.2",
     "angular-bootstrap": "^1.3.2",
     "angularfire": "^2.3.0",
     "toastr": "^2.1.2",
     "flag-icon-css": "^2.2.0",
     "angulartics": "^1.6.0",
-    "firebase": "^5.0.2",
+    "firebase": "^5.3.1",
     "angulartics-google-analytics": "^0.5.0"
   },
   "devDependencies": {

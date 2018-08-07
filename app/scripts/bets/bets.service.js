@@ -29,6 +29,7 @@
         let matchTime = match.datetime;
         let timeLimit = APP_CONFIG.timeLimit;
         let matchRound = match.round;
+        let matchGroup = match.group;
 
         if (now > matchTime - timeLimit) {
           let error = new Error('O palpite para este jogo está encerrado.');
@@ -41,7 +42,7 @@
 
         if (bet) {
           try {
-            bet = parseBet(bet, matchRound);
+            bet = parseBet(bet, matchRound, matchGroup);
             // console.log('parseBet');
             // console.log(bet);
 
@@ -56,11 +57,12 @@
       });
     }
 
-    function parseBet(bet, matchRound) {
+    function parseBet(bet, matchRound, matchGroup) {
       let regexp = new RegExp('^[0-9].*[0-9]$');
       let home;
       let away;
       let round;
+      let group;
 
       bet = bet.trim();
 
@@ -70,6 +72,7 @@
         home = bet[0];
         away = bet[bet.length - 1];
         round = matchRound;
+        group = matchGroup;
       } else {
         throw new Error('O formato é inválido');
       }
@@ -77,7 +80,8 @@
       return {
         home: home,
         away: away,
-        round: round
+        round: round,
+        group: group
       };
     }
   }

@@ -6,17 +6,17 @@
   .constant('APP_CONFIG', {
 
     // Firebase ref url
-    fbUrl: 'https://world-cup-2018-23b47.firebaseio.com/',
+    fbUrl: 'https://bolao-da-raca-b8d39.firebaseio.com/',
 
     // Closing time before match start in ms
-    // timeLimit: 300000,
-    timeLimit: -2592000000,
+    timeLimit: 1800000,
+    // timeLimit: -2592000000,
 
     // Data fields for match upload
-    matchFields: ['group', 'round', 'datetime', 'home', 'away'],
+    matchFields: ['group', 'round', 'datetime', 'location', 'home', 'away'],
 
     // Data fields for team upload
-    teamFields: ['longName', 'shortName', 'ISO'],
+    teamFields: ['longName', 'shortName', 'ISO', 'iconImg'],
 
     // Points rewarded for bets
     rules: {
@@ -28,7 +28,7 @@
     },
 
     // Eligible competitions
-    leagues: ['Rússia 2018', 'Brasileirão Serie A 2018'],
+    leagues: ['Brasileirão Serie B 2018'],
 
     //Conversores de Data
     //http://www.ruddwire.com/handy-code/date-to-millisecond-calculators/#.WzA4Yy3OrOQ
@@ -89,7 +89,8 @@
       resolve: {
         user: ($firebaseAuthService, userService) => {
           return $firebaseAuthService.$requireSignIn()
-          .then(data => {
+          .then((data) => {
+            console.log('$stateProvider resolve')
             return userService.getUser(data.uid);
           });
         }

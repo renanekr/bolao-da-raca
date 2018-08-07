@@ -13,13 +13,16 @@
 			<h2>Extrato dos Palpites <span class="label label-success pull-right">{{public.user.score}} pontos</span></h2>
 			<hr>
 			<h4 ng-repeat="match in public.matches | orderBy: 'datetime' : true | result as result" class="match-entry">
-				<span class="flag-icon" ng-class="{'flag-icon-{{match.home.ISO}}': true}"></span>
+				<span ng-show="match.home.ISO!=''" class="flag-icon" ng-class="{'flag-icon-{{match.home.ISO}}': true}"></span>
+				<img ng-show="match.home.iconImg!=''" class="teamIcon25" ng-src="images/teams/{{match.home.iconImg}}" />
 				<a ui-sref="app.match({matchId: match.$id})">	
 					<span class="hidden-xs">{{match.home.longName}} x {{match.away.longName}}</span>
 					<span class="visible-xs-inline">{{match.home.shortName}} x {{match.away.shortName}}</span>
 				</a>
-				<span class="flag-icon" ng-class="{'flag-icon-{{match.away.ISO}}': true}"></span>
-				
+				<img ng-show="match.away.iconImg!=''" class="teamIcon25" ng-src="images/teams/{{match.away.iconImg}}" />
+				<span ng-show="match.away.ISO!=''" class="flag-icon" ng-class="{'flag-icon-{{match.away.ISO}}': true}"></span>
+					
+
 				<span class="label label-success pull-right" ng-show="public.user.bets.matches[match.$id].points"><span class="glyphicon glyphicon-ok"></span> {{public.user.bets.matches[match.$id].points}} pontos</span>
 
 				<span class="label label-default pull-right" ng-hide="public.user.bets.matches[match.$id].points || !match.result"><span class="glyphicon glyphicon-remove"></span> 0 pontos</span>

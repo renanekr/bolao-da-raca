@@ -43,7 +43,7 @@
 					<tr class="text-center" ng-repeat="match in matches.data.matches | orderBy: matches.table.sortColumn : matches.table.reverse | filter: matches.table.filter">
 						<td>{{match.group}}</td>
 						<td>{{match.round}}</td>
-						<td class="text-center">{{match.datetime | date : 'dd/MM H:mm'}}</td>
+						<td class="text-center">{{match.datetime | date : 'dd/MM H:mm'}} | {{match.location}}</td>
 						<td class="text-center">{{match.home.longName}} x {{match.away.longName}}</td>
 						<td class="text-center">
 							<div ng-hide="matches.table.editResult == match.$id" ng-click="matches.table.editResult = match.$id">

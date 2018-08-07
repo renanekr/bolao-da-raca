@@ -17,7 +17,10 @@
 
 
     vm.getObjSize = function(obj){
-      return Object.keys(obj).length;
+      if (obj==null)
+        return 0;
+      else
+        return Object.keys(obj).length;
     };
 
     vm.filterRanking = function(round){

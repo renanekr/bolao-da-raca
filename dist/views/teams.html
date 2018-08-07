@@ -6,10 +6,10 @@
 		<div class="col-md-6" ng-hide="teams.uploadForm">
 			<ul class="list-group">
 				<li class="list-group-item" ng-repeat = "team in teams.data.teams | orderBy: 'shortName'">
-				<span class="flag-icon" ng-class="{'flag-icon-{{team.ISO}}': true}"></span>
+				<span ng-show="team.ISO!=''" class="flag-icon" ng-class="{'flag-icon-{{team.ISO}}': true"></span>
+				<img ng-show="team.iconImg!=''" class="teamIcon20" ng-src="images/teams/{{team.iconImg}}" />
 				{{team.longName}} ({{team.shortName}})
 				<span class="list-edit-controls pull-right text-danger">
-
 					<a href ui-sref="app.admin.teamDetails({team: team.shortName})" title="Jogadores"><span class="glyphicon glyphicon-user"></span>&nbspJogadores</a>
 				</span>
 				</li>
@@ -22,7 +22,7 @@
 			<form name="teamsForm" ng-submit="teams.upload(teams.form.list, teamsForm)">
 				<div class="form-group">
 					<label>Lista de Equipes</label>
-					<textarea required class="form-control" name="teamList" id="teamList" cols="30" rows="10" placeholder="Formato: Nome; Apelido; Código ISO (css)"
+					<textarea required class="form-control" name="teamList" id="teamList" cols="30" rows="10" placeholder="Formato: Nome; Apelido; Código ISO (css); Escudo (Imagem)"
 						ng-model="teams.form.list"></textarea>
 				</div>
 				<p class="help-block" ng-show="teamsForm.teamList.$touched && teamsForm.teamList.$invalid">Copie as informações da equipe!</p>

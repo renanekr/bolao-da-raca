@@ -20,7 +20,7 @@
       userService.register(credentials)
       .catch(error => {
         if (error === "IE Object doesn't support property or method 'find'") {
-          vm.errorMessage = "Ebben a böngészőben ez nem fog menni. Próbáld Chrome-ban vagy Firefoxban!";
+          vm.errorMessage = "O sistema não é suportado neste navegador. Entre com Chrome ou o Firefox!";
         }
 
         vm.loading = false;

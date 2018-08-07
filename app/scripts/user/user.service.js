@@ -23,6 +23,7 @@
     function getUser(uid) {
       return users.$loaded()
       .then(ref => {
+        console.log('getUser')
         console.log(ref.$getRecord(uid));
         return ref.$getRecord(uid);
       });
@@ -50,16 +51,25 @@
     }
 
     function login(credentials) {
+      console.log('login');
+      console.log(credentials);
       let date = new Date().getTime(); 
-      
+      console.log(date);
+
       return auth.$signInWithEmailAndPassword(credentials.email, credentials.password)
       .then(data => {
+        console.log('data');
+        console.log(data);
         return getUser(data.uid);
       })
       .then(user => {
-        user.lastLogin = date;
-
-        return saveUser(user);
+        console.log('user');
+        console.log(user);
+        if(user) {
+          user.lastLogin = date;
+          return saveUser(user);
+        }
+        
       });
     }
 
@@ -67,13 +77,46 @@
       auth.$signOut();
     }
 
+    function createUser(newUid, newEmail, newName, newLeague) {
+      let userObject = $firebaseObject($firebaseRef.users);
+      return userObject.$loaded()
+      .then(userObj => {
+        let date = new Date();
+
+        let newUser = {
+          email: newEmail,
+          name: newName,
+          createdAt: date.getTime(),
+          admin: false,
+          uid: newUid,
+          league: [newLeague],
+          totalScore: 0,
+          extraPoints: 0,
+          
+        };
+
+        userObj[newUid] = newUser;
+
+        return userObj.$save();
+      })
+      .then(resp => {
+        return usersPublic.$loaded();
+      })
+      .then(publicData => {
+        return publicData.$add({
+          uid: newUid,
+          league: [newLeague],
+          score: 0
+        });
+      });
+    };
+
     function register(credentials) {
       let newUid, pending, pendingList;
 
       return adminService.getPendingList()
       .then(list => {
         pendingList = list;
-
         pending = list.find(item => {
           let lower = item.email.toLowerCase();
 
@@ -81,7 +124,7 @@
         });
 
         if (!pending) {
-          let error = new Error('Ezzel az emailcímmel nem regisztrálhatsz. Írj a szervezőknek!');
+          let error = new Error('Você não pode se registrar com este endereço de e-mail. Entre em os organizadores (Renan ou Betão)!');
 
           return $q.reject(error);
         } else {
@@ -128,7 +171,7 @@
     }
 
     function saveUser(user) {
-      // console.log('saveUser: ' + user.name);
+      console.log('saveUser: ' + user.name);
       return users.$save(user)
       .then(ref => {
         return usersPublic.$loaded();
@@ -181,7 +224,8 @@
     }
 
     function changePassword(credentials) {
-      return auth.$updatePassword(credentials.password);
+      // console.log(credentials)
+      return auth.$updatePassword(credentials.newPassword);
     }
 
     return {
@@ -190,6 +234,7 @@
       logout: logout,
       register: register,
       getUser: getUser,
+      createUser: createUser,
       getUserMatchBets: getUserMatchBets,
       saveUser: saveUser,
       removeUser: removeUser,

@@ -110,27 +110,33 @@
 			</div>
 			<div class="col-sm-10 hidden-xs">
 				<h3>
-					<small>{{match.group}} | {{match.round}}</small>
+					<small>{{match.group}} | {{match.round}} | {{match.location}}</small>
 					<br />
-					<span class="flag-icon" ng-class="{'flag-icon-{{match.home.ISO}}': true}"></span>&nbsp{{match.home.longName}} x {{match.away.longName}}
-					<span class="flag-icon" ng-class="{'flag-icon-{{match.away.ISO}}': true}"></span>
+					<span ng-show="match.home.ISO!=''" class="flag-icon" ng-class="{'flag-icon-{{match.home.ISO}}': true}"></span>
+					<img ng-show="match.home.iconImg!=''" class="teamIcon30" ng-src="images/teams/{{match.home.iconImg}}" />
+					{{match.home.longName}} x {{match.away.longName}}
+					<img ng-show="match.away.iconImg!=''" class="teamIcon30" ng-src="images/teams/{{match.away.iconImg}}" />
+					<span ng-show="match.away.ISO!=''" class="flag-icon" ng-class="{'flag-icon-{{match.away.ISO}}': true}"></span>
+					
 				</h3>
 			</div>
 	
 			<div class="col-sm-10 visible-xs-block text-center">
 				<h3>
-					<small>{{match.group}} | {{match.round}}</small>
+					<small>{{match.group}} | {{match.round}} | {{match.location}}</small>
 					<br />
-					<span class="flag-icon" ng-class="{'flag-icon-{{match.home.ISO}}': true}"></span>&nbsp{{match.home.longName}} <br>
+					<span ng-show="match.home.ISO!=''" class="flag-icon" ng-class="{'flag-icon-{{match.home.ISO}}': true}"></span>
+					<img ng-show="match.home.iconImg!=''" class="teamIcon30" ng-src="images/teams/{{match.home.iconImg}}" />
+					{{match.home.longName}} <br>
 					x <br>
-					<span class="flag-icon" ng-class="{'flag-icon-{{match.away.ISO}}': true}"></span>
+					<img ng-show="match.away.iconImg!=''" class="teamIcon30" ng-src="images/teams/{{match.away.iconImg}}" />
+					<span ng-show="match.away.ISO!=''" class="flag-icon" ng-class="{'flag-icon-{{match.away.ISO}}': true}"></span>
 					{{match.away.longName}}
 				</h3>
 			</div>
 
 			<div class="col-xs-12 col-sm-2 text-center">
 				<h3 ng-hide = "bets.now > match.datetime - bets.timeLimit || match.result">
-					<!-- <h3 ng-hide = "bets.now > match.datetime - bets.timeLimit"> -->
 					<small ng-show="bets.user.bets.matches[match.$id]"> Alterar Palpite</small>
 					<br />
 					<a href ng-click="bets.inputs[match.$id] = true; bets.loadMatchBet(bets.user.bets.matches[match.$id], match.$id)" ng-hide="bets.inputs[match.$id]">

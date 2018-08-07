@@ -66,6 +66,24 @@
       }
     };
 
+    vm.addNewParticipant = function(uid, email, name, league) {
+      console.log('addNewParticipants');
+      console.log('uid: ' + uid + ', email: ' + email + ', name: ' + name + ', liga: ' + league);
+
+      userService.createUser(uid, email, name, league)
+      .then(resp => {
+        toastr.success('Usuário ' + name + ' adicionado com sucesso!');
+        vm.form.uid = undefined;
+        vm.form.email = undefined;
+        vm.form.name = undefined;
+        vm.showAddParticipant = false;
+      })
+      .catch(error => {
+        console.error(error);
+      });
+
+    };
+
     vm.deletePending = function(item) {
       adminService.deletePending(item)
       .then(resp => {
