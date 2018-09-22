@@ -7,6 +7,7 @@
 
   function scoreService($q, $firebaseObject, $firebaseRef, userService, APP_CONFIG) {
     let rules = APP_CONFIG.rules;
+    let exactResult;
 
     return {
       updateUserScores: updateUserScores
@@ -53,7 +54,9 @@
 
       if (user.bets.matches[match.$id] && match.result) {
         // console.log('points = calculateScore');
-        user.bets.matches[match.$id].points = calculateScore(match.result, user.bets.matches[match.$id]);
+        user.bets.matches[match.$id].points = calculateScore(user, match.result, user.bets.matches[match.$id]);
+        user.bets.matches[match.$id].exactResult = exactResult;
+
       } else if (user.bets.matches[match.$id]) {
         // console.log('points = null');
         user.bets.matches[match.$id].points = null;
@@ -64,14 +67,19 @@
 
     /* BOLAO REGRAS
     -------------------------------------------
-    5 = acerto placar
-    3 = acerto resultado (vitoria / empate)
-    1 = acerto placar uma das equipes */
+    7 = Acertou placar cravado
+    5 = Acertou resultado e a diferença de gols (com exceção ao empate)
+    4 = Acertou resultado empate (não cravando)
+    3 = Acertou somente o resultado (com exceção do empate)
+    1 = Acertou placar (número de gols) de uma das equipes */
 
-    function calculateScore(result, bet) {
+    function calculateScore(user, result, bet) {
       // console.log('calculateScore');
-      let score = 0;
+      // console.log(user);
 
+      let score = 0;
+      exactResult = false;
+      
       if (bet) {
         let matchWinner = decideWinner(result);
         // console.log('match winner: ' + matchWinner);
@@ -79,17 +87,28 @@
         // console.log('bet winner: ' + betWinner);
 
         if (result.home === bet.home && result.away === bet.away) {
-          //Acerto do placar = 5 pontos
+          //Acertou placar cravado = 7
           // console.log('exactResult');
           score += rules.exactResult;
+          exactResult = true;
+          
+        } else if (matchWinner != 'draw' && matchWinner === betWinner && ((result.home - result.away) === (bet.home - bet.away))) {
+          //Acertou resultado e a diferença de gols (com exceção ao empate) = 5
+          score += rules.resultDifScore
+
+        } else if (decideWinner(result)==='draw' && decideWinner(bet)==='draw') {
+          score += rules.resultDraw
+
         } else if (matchWinner === betWinner) {
             //Acerto do resultado (vitoria / empate) = 3 pontos
             // console.log('result');
             score += rules.result;
+
         } else if (result.home === bet.home || result.away === bet.away) {
           //Acerto do placar de uma das equipes = 1 ponto
           // console.log('teamScore');
           score += rules.teamScore;
+
         }
 
         // console.log('result casa: '+ result.home + 'x palpite casa: ' + bet.home);
@@ -118,7 +137,6 @@
     function getTotalScore(user) {
       if (!user.uid) {
         let error = new Error(user + ' não tem uid!');
-
         return $q.reject(error);
       }
 
@@ -128,13 +146,19 @@
           if (cur.points) {
             prev += cur.points;
           }
-
           return prev;
         }, 0);
-
         let extraScore = user.extraPoints || 0;
-
         user.totalScore = score + extraScore;
+        
+        //Atualiza total de cravadas para fins e desempate
+        let exactResults = matches.reduce((prev, cur) => {
+          if (cur.exactResult) {
+            prev++;
+          }
+          return prev;
+        }, 0);
+        user.exactResults = exactResults;
 
         return $q.resolve(user);
       });

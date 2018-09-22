@@ -51,10 +51,10 @@
     }
 
     function login(credentials) {
-      console.log('login');
-      console.log(credentials);
+      // console.log('login');
+      // console.log(credentials);
       let date = new Date().getTime(); 
-      console.log(date);
+      // console.log(date);
 
       return auth.$signInWithEmailAndPassword(credentials.email, credentials.password)
       .then(data => {
@@ -171,7 +171,9 @@
     }
 
     function saveUser(user) {
-      console.log('saveUser: ' + user.name);
+      // console.log(user);
+      // console.log('saveUser: ' + user.name);
+
       return users.$save(user)
       .then(ref => {
         return usersPublic.$loaded();
@@ -186,6 +188,7 @@
             name: user.name || null,
             uid: user.uid,
             score: user.totalScore || 0,
+            exactResults: user.exactResults || 0,
             league: user.league,
             bets: user.bets || null,
             company: user.company || null
@@ -193,6 +196,7 @@
         } else {
           found.name = user.name || null;
           found.score = user.totalScore || 0;
+          found.exactResults = user.exactResults;
           found.league = user.league;
           found.bets = user.bets || null;
           found.company = user.company || null;

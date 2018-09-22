@@ -23,7 +23,7 @@
         return Object.keys(obj).length;
     };
 
-    vm.filterRanking = function(round){
+    vm.filterRanking = function(group){
       // console.log('filterRanking: ' + round);
 
       vm.players.forEach(element => {
@@ -32,15 +32,17 @@
         // console.log(element.bets.matches);
         // console.log(Object.values(element.bets.matches));
         var tmpScore = 0;
-        Object.values(element.bets.matches).forEach(match => {
-          if(match.points!=undefined){
-            if((match.round == round) || (round =='Todas')){
-              // console.log(element.name + ' (' + element.uid + '): ' + match.round + ' -> ' + match.points);
-              // console.log(element.name + ': ' + match.home + 'x' + match.away + '-> ' + match.points);
-              tmpScore += match.points;
+        if(element.bets != undefined){
+          Object.values(element.bets.matches).forEach(match => {
+            if(match.points!=undefined){
+              if((match.group == group) || (group =='Todas')){
+                // console.log(element.name + ' (' + element.uid + '): ' + match.round + ' -> ' + match.points);
+                // console.log(element.name + ': ' + match.home + 'x' + match.away + '-> ' + match.points);
+                tmpScore += match.points;
+              }
             }
-          }
-        });
+          });
+        }
         // console.log(element.name + '->' + tmpScore);
         element.totalScore = tmpScore;
         

@@ -134,7 +134,7 @@
 					</ul>
 					<div 
 						class="player-entry" 
-						ng-repeat="player in dashboard.users | orderBy: ['score', '-name'] : true | league: dashboard.leagueFilter track by player.uid" 
+						ng-repeat="player in dashboard.users | orderBy: ['score', 'exactResults'] : true | league: dashboard.leagueFilter track by player.uid" 
 						ng-class="{'text-info player-bold': dashboard.user.uid === player.uid}">
 						<span class="player-position">
 							{{$index +1}}
@@ -143,6 +143,9 @@
 							<span class="glyphicon glyphicon-star-empty" ng-hide="dashboard.user.uid === player.uid" style="color: #fff"></span>
 							<span class="glyphicon glyphicon-star" ng-show="dashboard.user.uid === player.uid"></span>
 							<a ui-sref="app.public({uid: player.uid})">{{player.name}}</a>
+						</span>
+						<span>
+							<small>(Cravadas: <b>{{player.exactResults}}</b>)</small>
 						</span>
 						<span class="pull-right">
 							{{player.score}} pontos

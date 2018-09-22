@@ -50,8 +50,10 @@
 					<td class="text-center">{{match.datetime | date : 'dd/MM H:mm'}}</td>
 					<td class="text-center">{{match.home.longName}} x {{match.away.longName}}</td>
 					<td class="text-center">
-						<div ng-hide="matches.table.editResult == match.$id" ng-click="matches.table.editResult = match.$id">
+						<!-- <div ng-hide="matches.table.editResult == match.$id" ng-click="matches.table.editResult = match.$id"> -->
+						<div ng-click="matches.table.editResult = match.$id">
 							<span ng-show="match.result.home">{{match.result.home}}x{{match.result.away}}</span>
+							<span ng-show="!match.result.home">-x-</span>
 							<span class="glyphicon glyphicon-pencil"></span>
 						</div>
 						<form 

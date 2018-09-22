@@ -20,8 +20,10 @@
 
     // Points rewarded for bets
     rules: {
+      exactResult: 7,
+      resultDifScore: 5,
+      resultDraw: 4,
       result: 3,
-      exactResult: 5,
       teamScore: 1,
       finalWinner: 3,
       topScorer: 3
