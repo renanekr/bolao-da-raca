@@ -77,7 +77,7 @@
       }
     })
     .state('app.admin.configuration', {
-      url: '/matches',
+      url: '/config',
       templateUrl: 'views/configuration.html',
       controller: 'ConfigController',
       controllerAs: 'config'

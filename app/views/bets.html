@@ -164,6 +164,7 @@
 						{{bets.user.bets.matches[match.$id].home}} x 
 						{{bets.user.bets.matches[match.$id].away}}
 						 </small>
+						 <button type="button" ui-sref="app.match({matchId: match.$id})" class="btn btn-warning btn-xs">Ver Todos os Palpites</button>
 					</span>
 					<small ng-hide="bets.user.bets.matches[match.$id]">(Não palpitou)</small>
 				</h3>
@@ -181,9 +182,11 @@
 						{{bets.user.bets.matches[match.$id].away}})
 					</span>
 					<span ng-hide="bets.user.bets.matches[match.$id]">(Não palpitou)</span>
+					<!-- <a ui-sref="app.match({matchId: match.$id})"> -->
+						<button type="button" ui-sref="app.match({matchId: match.$id})" class="btn btn-warning btn-xs">Ver Todos os Palpites</button>
+					<!-- </a> -->
 				</h5>
 			</div>
 		</div>
 	</div>
 </div>
-

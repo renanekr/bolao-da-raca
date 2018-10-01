@@ -83,6 +83,12 @@ tr:hover .glyphicon-pencil {
   color: #888;
 }
 
+.player-entry small {
+  /* color: #888; */
+  color: #C0C0C0;
+}
+
+
 .point-label {
   font-size: 1.2em;
   font-weight: bold;

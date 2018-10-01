@@ -57,6 +57,7 @@
       public: APP_CONFIG.fbUrl + 'public',
       tournament: APP_CONFIG.fbUrl + 'tournament',
       tourconfig: APP_CONFIG.fbUrl + 'tournament/config',
+      tourrank: APP_CONFIG.fbUrl + 'tournament/ranking',
       teams: APP_CONFIG.fbUrl + 'tournament/teams',
       matches: APP_CONFIG.fbUrl + 'tournament/matches',
       players: APP_CONFIG.fbUrl + 'tournament/players',

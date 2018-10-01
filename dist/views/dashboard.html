@@ -74,7 +74,9 @@
 						<div class="panel-heading">
 							<h3 class="panel-title">
 								<span class="glyphicon glyphicon-ok-circle"></span>
-								Últimas Pontuações</h3>
+								Últimas Pontuações
+							</h3>
+							<small>(clique no jogo para ver todos os palpites)</small>
 						</div>
 						<div class="panel-body">
 							<div ng-hide="matches.length" class="empty-state-message text-center">
@@ -83,17 +85,22 @@
 							<div class="player-entry" ng-repeat="match in dashboard.tour.data.matches | orderBy: 'datetime' : true | result | limitTo: 4 as matches">
 								<span ng-show="match.home.ISO!=''" class="flag-icon" ng-class="{'flag-icon-{{match.home.ISO}}': true}"></span>
 								<img ng-show="match.home.iconImg!=''" class="teamIcon25" ng-src="images/teams/{{match.home.iconImg}}" />	
+								<!-- Link para abrir a página da partida com todas as apostas -->
 								<a ui-sref="app.match({matchId: match.$id})">
-									<span class="hidden-xs">{{match.home.longName}} x {{match.away.longName}}</span>
-									<span class="visible-xs-inline">{{match.home.shortName}} x {{match.away.shortName}}</span>
+									<span class="hidden-xs">{{match.home.longName}} <strong>{{match.result.home}} x {{match.result.away}}</strong> {{match.away.longName}}</span>
+									<span class="visible-xs-inline">{{match.home.shortName}} <strong>{{match.result.home}} x {{match.result.away}}</strong> {{match.away.shortName}}</span>
 								</a> 
 								<img ng-show="match.away.iconImg!=''" class="teamIcon25" ng-src="images/teams/{{match.away.iconImg}}" />
 								<span ng-show="match.away.ISO!=''" class="flag-icon" ng-class="{'flag-icon-{{match.away.ISO}}': true}"></span>
+								<br>
+								<small class="align-center">(Palpite: <strong>{{dashboard.user.bets.matches[match.$id].home}} x {{dashboard.user.bets.matches[match.$id].away}}</strong>)</small>
+									
 								
 								<span class="pull-right point-label">
-									<span class="label label-success" ng-show="dashboard.user.bets.matches[match.$id].points"><span class="glyphicon glyphicon-ok"></span> {{dashboard.user.bets.matches[match.$id].points}} pontos</span>
+									<span class="label" ng-class="{'label-success': dashboard.user.bets.matches[match.$id].points === 7, 'label-info': dashboard.user.bets.matches[match.$id].points === 5, 'label-warning': dashboard.user.bets.matches[match.$id].points === 3, 'label-primary': dashboard.user.bets.matches[match.$id].points === 1}" ng-show="dashboard.user.bets.matches[match.$id].points"><span class="glyphicon glyphicon-ok"></span> {{dashboard.user.bets.matches[match.$id].points}} pontos</span>
 									<span class="label label-default" ng-hide="dashboard.user.bets.matches[match.$id].points || !match.result"><span class="glyphicon glyphicon-remove"></span> 0 pontos</span>
 								</span>
+								<hr style="margin: 5px" />
 							</div>
 							<div class="text-center">
 								<button class="btn btn-primary" ui-sref="app.myBets({filter:false})">Jogos Encerrados</button>		
@@ -107,51 +114,53 @@
 		<div class="col-xs-12 col-md-6">
 			<div class="panel panel-success">
 				<div class="panel-heading">
+					
 					<h3 class="panel-title">
 						<span class="glyphicon glyphicon-star-empty"></span>
-						Ranking Geral
+						Ranking Geral 
+						<!-- <small class="pull-right">atualizado em {{dashboard.rankingLastUpdate}}</small> -->
 					</h3>
-					<!-- <small>
-						<form class="form-inline">
-							<label for="filter">Filtrar por Rodada</label>
-							<select id="filter" ng-model="filter" class="form-control">
-								<option selected>Todas</option>
-								<option>Rodada 1</option>
-								<option>Rodada 2</option>
-								<option>Rodada 3</option>
-								<option>Oitavas de Final</option>									
-								<option>Quartas de Final</option>
-								<option>Semifinais</option>
-								<option>Finais</option>
-							</select>
-							<button class="btn btn-success" ng-click="ranking.filterRanking(filter)">Filtrar</button>
-						</form>
-					</small> -->
+						
 				</div>
 				<div class="panel-body">
-					<ul class="nav nav-tabs" ng-if="dashboard.user.league[1]">
-						<li role="presentation" ng-class="{'active': dashboard.leagueFilter === league}" ng-repeat="league in dashboard.user.league"><a href ng-click="dashboard.leagueFilter = league">{{league}}</a></li>
-					</ul>
-					<div 
-						class="player-entry" 
-						ng-repeat="player in dashboard.users | orderBy: ['score', 'exactResults'] : true | league: dashboard.leagueFilter track by player.uid" 
-						ng-class="{'text-info player-bold': dashboard.user.uid === player.uid}">
-						<span class="player-position">
-							{{$index +1}}
-						</span>
-						<span>
-							<span class="glyphicon glyphicon-star-empty" ng-hide="dashboard.user.uid === player.uid" style="color: #fff"></span>
-							<span class="glyphicon glyphicon-star" ng-show="dashboard.user.uid === player.uid"></span>
-							<a ui-sref="app.public({uid: player.uid})">{{player.name}}</a>
-						</span>
-						<span>
-							<small>(Cravadas: <b>{{player.exactResults}}</b>)</small>
-						</span>
-						<span class="pull-right">
-							{{player.score}} pontos
-						</span>
-						<hr />
-					</div>
+						<form class="form-inline">
+								<div class="form-group">
+									<label for="filter">Filtrar por</label>
+									<select id="filter" ng-model="filter" ng-change="dashboard.filterRanking(filter)" class="form-control">
+										<option selected>Todas</option>
+										<option>Fase 1</option>
+										<option>Fase 2</option>
+										<option>Fase 3</option>
+										<option>Fase 4</option>
+										<option>Fase 5</option>
+									</select>
+								</div>
+							</form>
+					<table class="table table-sm table-striped table-dark table-responsive table-hover">
+						<thead>
+							<tr class="table-active">
+								<th scope="col">#</th>
+								<!-- <th scope="col">&nbsp;</th> -->
+								<th scope="col">Nome</th>
+								<th scope="col">Cravadas</th>
+								<th scope="col">Pontuação</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="player in dashboard.users | orderBy: ['score', 'exactResults'] : true | league: dashboard.leagueFilter track by player.uid" >
+								<td>{{$index +1}}</td>
+								<!-- <td>
+									<span class="glyphicon glyphicon-chevron-up" style="color:green"></span>
+									<span class="glyphicon glyphicon-chevron-down" style="color:red"></span>
+									<span class="glyphicon glyphicon-stop" style="color:gray"></span>
+								</td> -->
+								<td><a ui-sref="app.public({uid: player.uid})">{{player.name}}</a></td>
+								<td>{{player.exactResults}}</td>
+								<td>{{player.score}}</td>
+							</tr>
+						</tbody>
+
+					</table>
 				</div>
 				<div class="panel-footer">
 					<a ui-sref="app.rules">
@@ -159,31 +168,37 @@
 						Como funciona a pontuação?
 					</a>
 				</div>
+
 			</div>
 		</div>
 
-		<!-- <div class="col-xs-12 col-md-12" ng-show="false"> -->
+		<div class="col-xs-12 col-md-12" ng-show="false">
 			 <!-- ng-show="dashboard.user.admin"> -->
-			<!-- <table class="table table-striped">
-				<thead>
-					<tr>
-						<th scope="col">#</th>
-						<th scope="col">Nome</th>
-						<th scope="col">Palpites</th>
-						<th scope="col">Pontuação</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="player in dashboard.users | orderBy: 'score' : true | league: dashboard.leagueFilter track by player.uid" >
-						<td>{{$index +1}}</td>
-						<td>{{player.name}}</td>
-						<td>{{dashboard.getObjSize(player.bets.matches)}}</td>
-						<td>{{player.score}}</td>
-					</tr>
-				</tbody>
-			</table>
-		</div> -->
+			 <ul class="nav nav-tabs" ng-if="dashboard.user.league[1]">
+					<li role="presentation" ng-class="{'active': dashboard.leagueFilter === league}" ng-repeat="league in dashboard.user.league"><a href ng-click="dashboard.leagueFilter = league">{{league}}</a></li>
+				</ul>
+				<div 
+					class="player-entry" 
+					ng-repeat="player in dashboard.users | orderBy: ['score', 'exactResults'] : true | league: dashboard.leagueFilter track by player.uid" 
+					ng-class="{'text-info player-bold': dashboard.user.uid === player.uid}">
+					<span class="player-position">
+						{{$index +1}}
+					</span>
+					<span>
+						<span class="glyphicon glyphicon-star-empty" ng-hide="dashboard.user.uid === player.uid" style="color: #fff"></span>
+						<span class="glyphicon glyphicon-star" ng-show="dashboard.user.uid === player.uid"></span>
+						<a ui-sref="app.public({uid: player.uid})">{{player.name}}</a>
+					</span>
+					<span>
+						<small>(Cravadas: <b>{{player.exactResults}}</b>)</small>
+					</span>
+					<span class="pull-right">
+						{{player.score}} pontos
+					</span>
+					<hr />
+				</div>
+
+		</div>
 		
 	</div>
 </div>
-

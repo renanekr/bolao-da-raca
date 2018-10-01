@@ -12,10 +12,16 @@
     vm.user = user;
     vm.users = userService.public;
     vm.timeLimit = APP_CONFIG.timeLimit;
-
+    
     vm.promo = adminService.promo;
 
     vm.now = new Date().getTime();
+
+    // vm.rankingLastUpdate = tournamentService.getRankingLastUpdate()
+    // .then(lastUpdate => {
+    //   return lastUpdate
+    // })
+    // console.log('DASH vm.rankingLastUpdate: ' + vm.rankingLastUpdate);
 
     $interval(() => {
       vm.now = new Date().getTime();
@@ -127,6 +133,31 @@
         return 0;
       else
         return Object.keys(obj).length;
-    }
+    };
+
+    vm.filterRanking = function(group){
+      vm.users.forEach(element => {
+        // console.log(element.name)
+
+        // console.log(element.bets.matches);
+        // console.log(Object.values(element.bets.matches));
+        var tmpScore = 0;
+        if(element.bets != undefined){
+          Object.values(element.bets.matches).forEach(match => {
+            if(match.points!=undefined){
+              if((match.group == group) || (group =='Todas')){
+                // console.log(element.name + ' (' + element.uid + '): ' + match.round + ' -> ' + match.points);
+                // console.log(element.name + ': ' + match.home + 'x' + match.away + '-> ' + match.points);
+                tmpScore += match.points;
+              }
+            }
+          });
+        }
+        // console.log(element.name + '->' + tmpScore);
+        element.score = tmpScore;
+        
+      });
+    };
+
   }
 })();

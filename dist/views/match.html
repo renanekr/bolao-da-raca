@@ -1,77 +1,64 @@
 <div class="container">
-		<div class="row">
-			<div class="col-xs-12" ng-show="matches.uploadForm">
-				<h4>Importar partidas</h4>
-				<form name="matchesForm" ng-submit = "matches.upload(matches.form.list, matchesForm)">
-					<div class="form-group">
-						<label>Lista de jogos</label>
-						<textarea 
-							required
-							class="form-control" 
-							name="matchList" 
-							id="matchList" 
-							cols="30" 
-							rows="10"
-							placeholder="Formato: Grupo; Rodada; Data; Código Casa; Código Visitante"
-							ng-model="matches.form.list"></textarea>
-					</div>
-					<p class="help-block" ng-show="matchesForm.matchList.$touched && matchesForm.matchList.$invalid">Copie dos dados da Partida!</p>
-					<button class="btn btn-primary" type="submit" ng-disabled="matchesForm.$invalid">Importar</button>
-					<button class="btn btn-default" type="reset" ng-click="matches.uploadForm=false; matches.reset(matchesForm)">Cancelar</button>
-				</form>
-			</div>
-			<div class="col-xs-12" ng-hide="matches.uploadForm">
-				<form>
-					<div class="form-group">
-						<label for="filter">Filtro</label>
-						<input type="text" class="form-control" name="filter" ng-model = "matches.table.filter" placeholder="Digite o nome ou apelido da equipe"></div>
-				</form>
-				<table class="table table-hover">
-					<thead>
-						<th class="text-center col-xs-2" ng-click="matches.table.sortColumn = 'group'; matches.table.reverse = !matches.table.reverse">
-							<span class="glyphicon glyphicon-triangle-bottom" ng-show="matches.table.sortColumn == 'group' && matches.table.reverse"></span>
-							<span class="glyphicon glyphicon-triangle-top" ng-show="matches.table.sortColumn == 'group' && !matches.table.reverse"></span>
-							Grupo</th>
-						<th class="text-center col-xs-2">Rodada</th>
-						<th class="text-center col-xs-3" ng-click="matches.table.sortColumn = 'datetime'; matches.table.reverse = !matches.table.reverse">
-							<span class="glyphicon glyphicon-triangle-bottom" ng-show="matches.table.sortColumn == 'datetime' && matches.table.reverse"></span>
-							<span class="glyphicon glyphicon-triangle-top" ng-show="matches.table.sortColumn == 'datetime' && !matches.table.reverse"></span>
-							Data</th>
-						<th class="text-center col-xs-3">Equipes</th>
-						<th class="text-center col-xs-2">Placar</th>
-					</thead>
-					<tr class="text-center" ng-repeat="match in matches.data.matches | orderBy: matches.table.sortColumn : matches.table.reverse | filter: matches.table.filter">
-						<td>{{match.group}}</td>
-						<td>{{match.round}}</td>
-						<td class="text-center">{{match.datetime | date : 'dd/MM H:mm'}} | {{match.location}}</td>
-						<td class="text-center">{{match.home.longName}} x {{match.away.longName}}</td>
-						<td class="text-center">
-							<div ng-hide="matches.table.editResult == match.$id" ng-click="matches.table.editResult = match.$id">
-								<span ng-show="match.result.home">{{match.result.home}}x{{match.result.away}}</span>
-								<span class="glyphicon glyphicon-pencil"></span>
-							</div>
-							<form 
-								ng-if="matches.table.editResult == match.$id" 
-								name="resultForm" 
-								class="form-inline" 
-								ng-submit="matches.updateResult(match, matches.table.result[match.$id])">
-								<div class="form-group">
-									<input 
-										autofocus 
-										eb-focus = "matches.table.editResult === match.$id"
-										size="3"
-										type="text" 
-										class="form-control"
-										ng-model="matches.table.result[match.$id]">
-									<a href ng-click="matches.table.editResult = false">Cancelar</a>
-								</div>
-							</form>
-						</td>
-					</tr>
-				</table>
-			</div>
-			<div class="col-xs-12" ng-hide="matches.uploadForm">
-				<a href ng-click="matches.uploadForm = true" ><span class="glyphicon glyphicon-plus"></span> Importar partidas...</a>
-			</div>
+	<div class="row">
+		<div class="col-xs-12 col-md-10">
+			<h3>
+				<span class="label label-danger" ng-show="match.current.status === 'running'">ENCERRADO</span>
+                <small> {{match.current.datetime | date: 'dd/MM H:mm'}} | {{match.current.location}}</small>
+			</h3>
+			<h1 class="hidden-xs">
+                <span ng-show="match.current.home.ISO!=''" class="flag-icon" ng-class="{'flag-icon-{{match.current.home.ISO}}': true}"></span>
+                <img ng-show="match.current.home.iconImg!=''" class="teamIcon40" ng-src="images/teams/{{match.current.home.iconImg}}" />	
+                
+				<span>{{match.current.home.longName}} x {{match.current.away.longName}}</span>
+				<img ng-show="match.current.away.iconImg!=''" class="teamIcon40" ng-src="images/teams/{{match.current.away.iconImg}}" />
+			    <span ng-show="match.current.away.ISO!=''" class="flag-icon" ng-class="{'flag-icon-{{match.current.away.ISO}}': true}"></span>
+                <br>
+                <small ng-show="match.current.status === 'closed'">Resultado:&nbsp;</small> 
+                <span class="label label-danger" ng-show="match.current.status === 'closed'">{{match.current.result.home}} x {{match.current.result.away}}</span>
+                
+			</h1>
+			<h3 class="visible-xs-inline">
+                <span ng-show="match.current.home.ISO!=''" class="flag-icon" ng-class="{'flag-icon-{{match.current.home.ISO}}': true}"></span>
+                <img ng-show="match.current.home.iconImg!=''" class="teamIcon25" ng-src="images/teams/{{match.current.home.iconImg}}" />	
+                <span>{{match.current.home.shortName}} x {{match.current.away.shortName}}</span>
+				<img ng-show="match.current.away.iconImg!=''" class="teamIcon25" ng-src="images/teams/{{match.current.away.iconImg}}" />
+			    <span ng-show="match.current.away.ISO!=''" class="flag-icon" ng-class="{'flag-icon-{{match.current.away.ISO}}': true}"></span>
+                <span class="label label-danger pull-right" ng-show="match.current.status === 'closed'">{{match.current.result.home}} x {{match.current.result.away}}</span>
+                <small class="pull-right" ng-show="match.current.status === 'closed'">Resultado:&nbsp;</small>
+			</h3>
 		</div>
 	</div>
+	<hr>
+	<!--
+	<div class="row" ng-hide="match.current.status === 'open'">
+		<div class="col-xs-12 col-md-6">
+			<div>Participante</div>
+			<div class="pull-right">Palpite</div>
+		</div>
+	</div>
+-->
+	<div class="row" ng-hide="match.current.status === 'open'">
+		<div class="col-xs-12 col-md-6">
+			<ul class="nav nav-tabs" ng-if="match.user.league[1]">
+				<li role="presentation" ng-class="{'active': match.leagueFilter === league}" ng-repeat="league in match.user.league"><a href ng-click="match.leagueFilter = league">{{league}} Campeonato</a></li>
+			</ul>
+			<h4 ng-repeat="user in match.userList | orderBy: match.sort : match.reverse | league: match.leagueFilter" class="match-entry">
+				
+				<a ui-sref="app.public({uid: user.uid})">{{user.name}}</a>
+				
+				<span class="pull-right" ng-show="match.current.status === 'closed'">
+
+					<span class="label" ng-class="{'label-success': user.points === 7, 'label-info': user.points === 5, 'label-warning': user.points === 3, 'label-primary': user.points === 1}" ng-show="user.points">
+						<span class="glyphicon glyphicon-ok"></span> {{user.points}} pontos</span>
+						<span class="label label-default" ng-show="!user.points"><span class="glyphicon glyphicon-remove"></span> 0 pontos</span>
+				</span>
+
+				<span class="pull-right" ng-show="match.current.status === 'running'">
+					{{user.home}} x {{user.away}}
+				</span>
+				<small ng-show="match.current.status === 'closed' && user.home==null"><div>Palpite não informado</div></small>
+				<small ng-show="match.current.status === 'closed' && user.home!=null"><div>Palpite: {{user.home}} x {{user.away}}</div></small>
+			</h4>
+		</div>
+	</div>
+</div>

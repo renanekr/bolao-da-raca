@@ -13,6 +13,7 @@
     data.players = $firebaseArray($firebaseRef.players);
     data.scores = $firebaseArray($firebaseRef.public);
     data.config = $firebaseArray($firebaseRef.tourconfig);
+    data.ranking = $firebaseArray($firebaseRef.tourrank);
 
     return {
       data: data,
@@ -25,7 +26,8 @@
       uploadMatches: uploadMatches,
       getMatch: getMatch,
       saveMatch: saveMatch,
-      updateResult: updateResult
+      updateResult: updateResult,
+      getRankingLastUpdate: getRankingLastUpdate
     };
 
     // TEAM METHODS
@@ -157,9 +159,24 @@
       });
     }
 
+    function getRankingLastUpdate(){
+      var lastUpdate;
+      console.log('getRankingLastUpdate');
+      
+      data.ranking.$loaded()
+      .then(ref => {
+        lastUpdate = ref.$getRecord('lastUpdate')['$value'];
+        console.log(lastUpdate);
+        return lastUpdate;
+      });
+      
+    }
+
     function updateResult(match, result) {
       console.log('Tour - updateResult');
       let regexp = new RegExp('^[0-9].*[0-9]$');
+
+      console.log(data.ranking)
 
       match.result = {};
 
@@ -190,7 +207,7 @@
       let date = new Date(string);
 
       if (date === 'Invalid Date') {
-        throw new Error('Nem jó a dátumformátum');
+        throw new Error('Formato de data inválido.');
       }
 
       return date.getTime();
@@ -204,9 +221,9 @@
         match.home = findHome;
         match.away = findAway;
       } else if (!find.home) {
-        throw new Error(match.home + ' nevű csapat nincs a listában');
+        throw new Error(match.home + ' não está na lista');
       } else {
-        throw new Error(match.away + ' nevű csapat nincs a listában');
+        throw new Error(match.away + ' não está na lista');
       }
     }
 
