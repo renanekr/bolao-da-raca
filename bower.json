@@ -32,5 +32,20 @@
   },
   "resolutions": {
     "firebase": "^5.0.2"
-  }
+  },
+  "homepage": "https://github.com/renanekr/bolao-da-raca",
+  "authors": [
+    "Renan Rendon <falecom@renan.inf.br>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
 }
