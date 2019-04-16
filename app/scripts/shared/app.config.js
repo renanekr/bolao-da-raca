@@ -30,16 +30,16 @@
     },
 
     // Eligible competitions
-    leagues: ['Brasileirão Serie B 2018'],
+    leagues: ['Brasileirão Series A e B 2019', 'Brasileirão Serie B 2018'],
+    currentLeague: ['Brasileirão Series A e B 2019'],
 
     //Conversores de Data
     //http://www.ruddwire.com/handy-code/date-to-millisecond-calculators/#.WzA4Yy3OrOQ
     //https://www.timecalculator.net/milliseconds-to-date
 
-    // Starting time: 2018.06.14. 12:00
-    startTime: 1528988400000
+    // Starting time: 2018.06.14. 12:00 startTime: 1528988400000
     //Libera bets: 01/08/2018 = 1533092400000
-    // startTime: 1533092400000
+    startTime: 1554087600000
 
   })
   .config(appRouting)

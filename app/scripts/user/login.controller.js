@@ -9,17 +9,16 @@
 
   function LoginController(userService) {
     var vm = this;
-
     vm.user = userService;
     vm.loading = false;
 
     vm.login = function(data) {
       data.email = data.email.toLowerCase();
-
       vm.loading = true;
 
       userService.login(data)
       .catch(error => {
+        console.log(error);
         toastr.error(error.message);
         vm.loading = false;
       });

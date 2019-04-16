@@ -47,7 +47,41 @@
 				<tr class="text-center" ng-repeat="match in matches.data.matches | orderBy: matches.table.sortColumn : matches.table.reverse | filter: matches.table.filter">
 					<td>{{match.group}}</td>
 					<td>{{match.round}}</td>
-					<td class="text-center">{{match.datetime | date : 'dd/MM H:mm'}}</td>
+					<td class="text-center">
+						<div ng-click="matches.table.editDate = match.$id">
+							{{match.datetime | date : 'dd/MM H:mm'}}
+							<span class="glyphicon glyphicon-pencil"></span>
+						</div>
+						<form 
+							ng-if="matches.table.editDate == match.$id" 
+							name="dateForm" 
+							class="form-inline" 
+							ng-submit="matches.updateDate(match, matches.table.datetime)">
+							<div class="form-group">
+								<div class='input-group date' id='datetimepicker1'>
+									<input type='text' class="form-control" />
+										<span class="input-group-addon">
+											<span class="glyphicon glyphicon-calendar"></span>
+											<a href ng-click="matches.table.editDate = false"><span class="text-danger glyphicon glyphicon-remove"></span></a>
+										</span>
+								</div>
+								<script type="text/javascript">
+									$(function () {
+										$('#datetimepicker1').datetimepicker();
+									});
+								</script>
+								<!-- <datepicker>
+									<input 
+										autofocus 
+										eb-focus = "matches.table.editDate === match.$id"
+										size="3"
+										type="text" 
+										class="form-control"
+										ng-model="matches.table.datetime">
+								</datepicker> -->
+							</div>
+						</form>
+					</td>
 					<td class="text-center">{{match.home.longName}} x {{match.away.longName}}</td>
 					<td class="text-center">
 						<!-- <div ng-hide="matches.table.editResult == match.$id" ng-click="matches.table.editResult = match.$id"> -->
@@ -69,7 +103,8 @@
 									type="text" 
 									class="form-control"
 									ng-model="matches.table.result[match.$id]">
-								<a href ng-click="matches.table.editResult = false">Cancelar</a>
+								<!-- <a href ng-click="matches.table.editResult = false">Cancelar</a> -->
+								<a href ng-click="matches.table.editResult = false"><span class="text-danger glyphicon glyphicon-remove"></span></a>
 							</div>
 						</form>
 					</td>

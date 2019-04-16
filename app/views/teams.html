@@ -6,7 +6,7 @@
 		<div class="col-md-6" ng-hide="teams.uploadForm">
 			<ul class="list-group">
 				<li class="list-group-item" ng-repeat = "team in teams.data.teams | orderBy: 'shortName'">
-				<span ng-show="team.ISO!=''" class="flag-icon" ng-class="{'flag-icon-{{team.ISO}}': true"></span>
+				<span ng-show="team.ISO!=''" class="flag-icon" ng-class="{'flag-icon-{{team.ISO}}': true}"></span>
 				<img ng-show="team.iconImg!=''" class="teamIcon20" ng-src="images/teams/{{team.iconImg}}" />
 				{{team.longName}} ({{team.shortName}})
 				<span class="list-edit-controls pull-right text-danger">

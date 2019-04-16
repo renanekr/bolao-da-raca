@@ -41,12 +41,13 @@
 					</th>
 					<!-- <th class="text-center">Campeão</th>
 					<th class="text-center">Goleiro</th> -->
+					<th class="text-center">Ativo</th>
 					<th class="text-center">Admin</th>
 					<th class="text-center">Pontos Extra</th>
 				</thead>
 				<tbody>
 					<tr ng-repeat="user in participants.players | orderBy: participants.orderBy : participants.reverse | filter: participants.listFilter | league: participants.leagueFilter"
-						ng-class="{'table-success': user.admin == true}">
+						ng-class="{'success': user.admin, 'danger': !user.active}">
 
 						<td nowrap>{{user.name}}</td>
 						<td class="text-center" nowrap>{{user.uid}}</td>
@@ -62,8 +63,13 @@
 							<span ng-hide="user.bets.topScorer && user.bets.winner"><span class="glyphicon glyphicon-remove text-danger"></span></span>
 						</td> -->
 						<td class="text-center" nowrap> 
-							<a ng-hide="user.admin" ng-click="participants.makeUserAdmin(user)"><span class="glyphicon glyphicon-ok"></span></a>
-							<a ng-hide="!user.admin" ng-click="participants.makeUserSimple(user)"><span class="glyphicon glyphicon-remove"></span></a>
+							<!-- <a ng-hide="!user.active" ng-click="participants.activateUser(user)"><span class="glyphicon glyphicon-ok"></span></a>
+							<a ng-hide="user.active" ng-click="participants.activateUser(user)"><span class="glyphicon glyphicon-remove"></span></a> -->
+							<a ng-click="participants.activateUser(user)"><span ng-class="{'text-danger': !user.active, 'text-success': user.active, 'glyphicon': true, 'glyphicon-ok': user.active, 'glyphicon-remove': !user.active }"></span></a>				
+						</td>
+						<td class="text-center" nowrap> 
+							<a ng-click="participants.adminUser(user)"><span ng-class="{'text-danger': !user.admin, 'text-success': user.admin, 'glyphicon': true, 'glyphicon-ok': user.admin, 'glyphicon-remove': !user.admin }"></span></a>
+							<!-- <a ng-hide="!user.admin" ng-click="participants.makeUserSimple(user)"><span class="glyphicon glyphicon-remove"></span></a> -->
 						</td>	
 						<td class="text-left" nowrap>
 							<span class="label label-success" ng-show="user.extraPoints">{{user.extraPoints}}</span>

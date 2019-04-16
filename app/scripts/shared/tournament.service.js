@@ -221,9 +221,11 @@
         match.home = findHome;
         match.away = findAway;
       } else if (!find.home) {
-        throw new Error(match.home + ' não está na lista');
+        console.log(match.home + ' não está na lista', match );
+        throw new Error(match.home + ' não está na lista (casa)');
       } else {
-        throw new Error(match.away + ' não está na lista');
+        console.log(match.away + ' não está na lista',  match);
+        throw new Error(match.away + ' não está na lista (fora)');
       }
     }
 
@@ -252,7 +254,9 @@
     }
 
     function lookUpTeamName(name) {
+      // console.log("Searching for team: " + name);
       return data.teams.find(existingTeam => {
+        // console.log(existingTeam);
         if (existingTeam.shortName === name || existingTeam.longName === name) {
           return true;
         }

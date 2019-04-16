@@ -13,6 +13,9 @@ Configurar projeto bower (caso não tenha sido configurado)
 Instalar pacotes bower
 > bower install
 
+Instalar o grunt local
+> npm install grunt --save-dev
+
 Executar o projeto
 > grunt serve
 

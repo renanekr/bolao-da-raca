@@ -7,7 +7,19 @@
 				<a class="btn btn-success" ng-hide="dashboard.promo.users[dashboard.user.uid]" href ng-click="dashboard.replyToPromo(dashboard.promo.current, dashboard.user, true)">Estou chegando!</a>
 				<em ng-show="dashboard.promo.users[dashboard.user.uid]">Você marcou que está vindo <a href ng-click="dashboard.replyToPromo(dashboard.promo.current, dashboard.user, null)">Não estou indo</a></em>			
 			</div>	
-		</div> -->
+		</div> 
+
+		<div class="form-group">
+			<select class="form-control" 
+				ng-options="league for league in dashboard.leagues" 
+				ng-model="league"
+				ng-change="dashboard.changeTournament(league)"
+			>
+				{{league}}
+				<option value="" disabled selected hidden>Selecione o Bolão</option>
+			</select>
+		</div>
+		-->
 		<div class="col-xs-12 col-md-6">
 			<div class="row">
 
@@ -21,6 +33,7 @@
 							</h3>
 						</div>
 						<div class="panel-body" ng-class="{'bg-warning': !dashboard.user.bets}">
+							
 							<div class="match-entry" ng-repeat="match in dashboard.tour.data.matches | orderBy: 'datetime' : true | open: false | noResult | limitTo: 2 as currentMatches">
 								<span class="label label-danger" ng-show="dashboard.now > match.datetime - dashboard.timeLimit">ENCERRADO</span><small> {{match.datetime | date: 'dd/MM H:mm'}} | {{match.location}}</small><br>
 								
@@ -62,9 +75,13 @@
 							</div>
 							
 							<div class="text-center">
+								<div ng-hide="dashboard.user.bets">
+									<span class="label label-danger text-center" >ATENÇÃO: você ainda não fez nenhum palpite!</span>
+									<br>
+									<button class="btn btn-warning" ui-sref="app.myBets({filter: true})">Cadastrar Palpites!</button>
+								</div>
 								<button class="btn btn-primary" ui-sref="app.myBets({filter: true})" ng-show="dashboard.user.bets">Palpites Em Aberto</button>
-								<button class="btn btn-warning" ui-sref="app.myBets({filter: true})" ng-hide="dashboard.user.bets">Cadastrar Palpites!</button>
-							</div>
+								</div>
 						</div>
 					</div>
 				</div>

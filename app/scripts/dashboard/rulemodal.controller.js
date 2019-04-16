@@ -11,6 +11,7 @@
 
     console.log(vm.user);
     vm.turnOffAlert = function(user) {
+      console.log("turnOffAlert", user.alerts);
       user.alerts = user.alers || {};
       user.alerts.ruleAlert = false; //true mostra o modal das regras
 

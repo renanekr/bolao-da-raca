@@ -5,7 +5,7 @@ Atlético-MG;CAM;;cam.svg
 Avaí;AVA;;ava.svg
 Bahia;BAH;;bah.svg
 Botafogo;BOT;;bot.svg
-CSA;CSA;;.svg
+CSA;CSA;;csa.svg
 Ceará;CEA;;cea.svg
 Chapecoense;CHA;;cha.svg
 Corinthians;COR;;cor.svg
@@ -36,9 +36,9 @@ Oeste;OES;;oes.svg
 Operário-PR;OPE;;ope.svg
 Paraná;PAR;;par.svg
 Ponte Preta;PON;;pon.svg
-São Bento;SBN;;sbn.svg
+São Bento;sbe;;sbe.svg
 Sport;SPO;;spo.svg
 Vila Nova;VIL;;vil.svg
 Vitória;VIT;;vit.svg
-TESTE1;TE1;br;no.svg
-TESTE2;TE2;br;no.svg
+TESTE1;TE1;;no.svg
+TESTE2;TE2;;no.svg

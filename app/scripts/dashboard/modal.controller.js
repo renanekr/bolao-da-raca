@@ -11,7 +11,7 @@
 
     vm.saveUser = function(name, company) {
       if (!name) {
-        throw new Error('Nincs név megadva');
+        throw new Error('Nenhum nome informado');
       }
 
       user.name = name;
@@ -22,7 +22,7 @@
 
       userService.saveUser(user)
       .then(resp => {
-        $uibModalInstance.close('Elmentettük az adataidat!');
+        $uibModalInstance.close('Dados alterados com sucesso!');
       });
     };
   }

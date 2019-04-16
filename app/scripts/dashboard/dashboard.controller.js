@@ -12,7 +12,8 @@
     vm.user = user;
     vm.users = userService.public;
     vm.timeLimit = APP_CONFIG.timeLimit;
-    
+    vm.leagues = APP_CONFIG.leagues;
+    vm.leagueFilter = APP_CONFIG.currentLeague;
     vm.promo = adminService.promo;
 
     vm.now = new Date().getTime();
@@ -27,35 +28,42 @@
       vm.now = new Date().getTime();
     }, 10000);
 
-    // console.log('user.alerts');
-    // console.log(user.alerts);
-    // console.log('user.alerts.ruleAlert: ' + user.alerts.ruleAlert);
-    /*
-    if (!user.alerts || !user.alerts.ruleAlert) {
-      let ruleModal = $uibModal.open({
-        templateUrl: 'views/rule_modal.html',
-        controller: 'RuleModalController',
-        controllerAs: 'ruleModal',
-        animation: true,
-        backdrop: 'static',
-        resolve: {
-          user: () => {
-            return user;
-          }
-        }
-      });
+    // console.log('user.alerts', user.alerts);
+    // console.log('user.alerts.ruleAlert', user.alerts.ruleAlert);
+    // if (user.alerts.ruleAlert) {
+    //   console.log("Show rule alert")
+    //   let ruleModal = $uibModal.open({
+    //     templateUrl: 'views/rule_modal.html',
+    //     controller: 'RuleModalController',
+    //     controllerAs: 'ruleModal',
+    //     animation: true,
+    //     backdrop: 'static',
+    //     resolve: {
+    //       user: () => {
+    //         return user;
+    //       }
+    //     }
+    //   });
+    // 
+    //   ruleModal.result
+    //   .then(result => {
+    //     toastr.success(result);
+    //   })
+    //   .catch(error => {
+    //     console.error(error);
+    //   });
+    // }
 
-      ruleModal.result
-      .then(result => {
-        toastr.success(result);
-      })
-      .catch(error => {
-        console.error(error);
-      });
-    }
-    */
+    if(user){
+      // console.log("Atualizando hora de login", vm.now);
+      user.lastLogin = vm.now;
+      userService.saveUser(user);
+    };
+
     if (user.league && user.league.length) {
-      vm.leagueFilter = user.league[0];
+      // console.log('user.league', user.league)
+       vm.leagueFilter = user.league[0];
+      //vm.leagueFilter = user.league;
     }
 
     if ($state.params.temporary) {
@@ -83,6 +91,7 @@
     }
 
     if (!user.name) {
+      console.log("User name not found. Show welcome modal");
       let modalInstance = $uibModal.open({
         templateUrl: 'views/welcome_modal.html',
         controller: 'modalController',
@@ -133,6 +142,12 @@
         return 0;
       else
         return Object.keys(obj).length;
+    };
+
+    vm.changeTournament = function(league){
+      //Não utilizada ainda
+      console.log('changeTournament to', league);
+      vm.leagueFilter = league;
     };
 
     vm.filterRanking = function(group){

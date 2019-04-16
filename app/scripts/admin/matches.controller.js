@@ -13,8 +13,9 @@
     vm.table = {};
     vm.table.sortColumn = 'datetime';
     vm.table.reverse = false;
+    vm.table.editDate = false;
     vm.table.editResult = false;
-
+  
     vm.reset = function(form) {
       vm.form = {};
 

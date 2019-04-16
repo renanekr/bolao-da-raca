@@ -13,8 +13,38 @@
     vm.orderBy = 'name';
     vm.reverse = false;
     vm.leagueFilter = vm.leagues[0];
+  
     vm.promo = adminService.promo;
 
+    vm.activateUser = function(user) {
+      var msg;
+      // console.log(user);
+      user.active = !user.active;
+      msg = user.active ? 'ativado' : 'inativado';
+
+      userService.saveUser(user)
+      .then(() => {
+        toastr.success(user.email + ' foi ' + msg + '.');
+      })
+      .catch(error => {
+        toastr.error(error);
+      });
+    };
+    vm.adminUser = function(user) {
+      var msg;
+      // console.log(user);
+      user.admin = !user.admin;
+      msg = user.admin ? 'tornou-se' : 'NÃO é mais';
+
+      userService.saveUser(user)
+      .then(() => {
+        toastr.success(user.email + ' ' + msg + ' administrador.');
+      })
+      .catch(error => {
+        toastr.error(error);
+      });
+    };
+/*
     vm.makeUserAdmin = function(user) {
       user.admin = true;
 
@@ -38,7 +68,7 @@
         toastr.error(error);
       });
     };
-
+*/
     vm.addNewEmails = function(list, league) {
       if (list) {
         list = list.replace(/\n/g, '');
@@ -109,7 +139,7 @@
 
       user.league.push(league);
 
-      userService.saveUser(user)
+      userService.saveUser(user,false)
       .then(() => {
         toastr.success(user.name + ' a ' + league + ' tornou-se um membro');
       })

@@ -23,8 +23,8 @@
     function getUser(uid) {
       return users.$loaded()
       .then(ref => {
-        console.log('getUser')
-        console.log(ref.$getRecord(uid));
+        console.log('getUser',ref.$getRecord(uid));
+        
         return ref.$getRecord(uid);
       });
     }
@@ -48,25 +48,23 @@
 
     function getUserList() {
       return users.$loaded();
-    }
+    };
 
     function login(credentials) {
-      // console.log('login');
-      // console.log(credentials);
-      let date = new Date().getTime(); 
+      console.log('userService.login', credentials);
+      let date = new Date(); 
       // console.log(date);
 
       return auth.$signInWithEmailAndPassword(credentials.email, credentials.password)
       .then(data => {
-        console.log('data');
-        console.log(data);
+        console.log('data',data);
         return getUser(data.uid);
       })
       .then(user => {
-        console.log('user');
-        console.log(user);
+        console.log('user',user);
         if(user) {
-          user.lastLogin = date;
+          user.lastLogin = date.getTime();
+          // console.log('last login:', user.lastLogin)
           return saveUser(user);
         }
         
@@ -191,7 +189,7 @@
             exactResults: user.exactResults || 0,
             league: user.league,
             bets: user.bets || null,
-            company: user.company || null
+            company: user.company || null,
           });
         } else {
           found.name = user.name || null;
@@ -230,6 +228,11 @@
     function changePassword(credentials) {
       // console.log(credentials)
       return auth.$updatePassword(credentials.newPassword);
+    }
+
+    function updateUser(credentials) {
+      console.log(credentials)
+      //return auth.$updateUser(credentials);
     }
 
     return {
