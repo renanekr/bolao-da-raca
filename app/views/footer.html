@@ -1,6 +1,9 @@
 <footer class="eb-footer">
   <div class="container">
-    <p>Bolão da Raça - 2018</p>
+    <p>Bolão da Raça &copy; <span id="year"></span> - <a href="http://renan.inf.br" target="_blank">renan.inf.br</a></p>
     <!-- <a href ui-sref="app.contact">Contato</a> -->
   </div>
+  <script>
+      document.getElementById("year").innerHTML = new Date().getFullYear();
+  </script>
 </footer>

@@ -24,7 +24,6 @@
 			<div class="row">
 
 				<div class="col-xs-12">
-					
 					<div class="panel panel-info" ng-class="{'panel-info': dashboard.user.bets, 'panel-warning': !dashboard.user.bets}">
 						<div class="panel-heading">
 							<h3 class="panel-title">
@@ -134,6 +133,37 @@
 					</div>
 				</div>
 			</div>
+		</div>
+
+		<div class="col-xs-12 col-md-6">
+				<div class="panel panel-danger">
+						<div class="panel-heading">
+							<h3 class="panel-title">
+								<span class="glyphicon glyphicon-pushpin"></span>
+								Palpite Padrão
+							</h3>
+							<small>(será utilizado caso você deixe palpites em branco)</small>
+						</div>
+						<div class="panel-body">
+								<small >Informe o seu palpite padrão (time da casa x time visitante)</small>
+								<input
+									name="matchBetDefault"
+									size="3"
+									class="form-control bet-input"
+									type="text" 
+									eb-focus="bets.inputs[match.$id]"
+									ng-model="bets.matchBetDefault"
+									
+									placeholder="Formato: 0x0"
+									ng-keypress="bets.submitBetOnEnter($event, bets.matchBetDefault, null)">
+								<small>Formatos válidos: 0x0 e 00. Para salvar, pressione enter ou saida do campo</small>
+								<!-- 
+									ng-blur="bets.updateBet(bets.matchBet[match.$id], match.$id)" 
+									ng-if="bets.inputs[match.$id] || !bets.user.bets.matches[match.$id]"  
+								-->
+						</div>
+				</div>
+
 		</div>
 
 		<div class="col-xs-12 col-md-6">
