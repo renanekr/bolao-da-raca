@@ -11,6 +11,5 @@
     vm.userService = userService;
     vm.user = user;
     vm.state = $state;
-    vm.currentYear = '2019';
   }
 })();

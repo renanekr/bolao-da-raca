@@ -31,10 +31,10 @@
 						<span class="glyphicon glyphicon-triangle-top" ng-show="participants.orderBy === 'email' && !participants.reverse"></span>
 						<span class="glyphicon glyphicon-triangle-bottom" ng-show="participants.orderBy === 'email' && participants.reverse"></span>
 					</th>
-					<th class="text-center" ng-click="participants.orderBy = 'company' ; participants.reverse = !participants.reverse">Empresa
+					<!-- <th class="text-center" ng-click="participants.orderBy = 'company' ; participants.reverse = !participants.reverse">Empresa
 						<span class="glyphicon glyphicon-triangle-top" ng-show="participants.orderBy === 'company' && !participants.reverse"></span>
 						<span class="glyphicon glyphicon-triangle-bottom" ng-show="participants.orderBy === 'company' && participants.reverse"></span>
-					</th>
+					</th> -->
 					<th class="text-center" ng-click="participants.orderBy = 'lastLogin' ; participants.reverse = !participants.reverse">Último login
 						<span class="glyphicon glyphicon-triangle-top" ng-show="participants.orderBy === 'lastLogin' && !participants.reverse"></span>
 						<span class="glyphicon glyphicon-triangle-bottom" ng-show="participants.orderBy === 'lastLogin' && participants.reverse"></span>
@@ -52,7 +52,7 @@
 						<td nowrap>{{user.name}}</td>
 						<td class="text-center" nowrap>{{user.uid}}</td>
 						<td><span uib-tooltip="{{user.uid}}">{{user.email}}</span></td>
-						<td class="text-center" nowrap>{{user.company}}</td>
+						<!-- <td class="text-center" nowrap>{{user.company}}</td> -->
 						<td class="text-center" nowrap>{{user.lastLogin | date: 'dd/MM H:mm'}}</td>
 						<!-- <td class="text-center">
 							{{user.bets.winner.longName}}

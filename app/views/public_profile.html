@@ -4,7 +4,7 @@
 			<!-- <div class="jumbotron"> -->
 				<h1>
 					<span class="glyphicon glyphicon-bullhorn"></span>
-					{{public.user.name}} 
+					{{public.user.name}}
 					<small>{{public.user.company}}</small>
 				</h1>
 			<!-- </div> -->
@@ -28,13 +28,8 @@
 				<span ng-show="match.away.ISO!=''" class="flag-icon" ng-class="{'flag-icon-{{match.away.ISO}}': true}"></span>
 				
 				<span ng-show="public.user.bets.matches[match.$id].points"
-					ng-class="{'label': true,
-								'label-success': public.user.bets.matches[match.$id].points === 7, 
-								'label-info': public.user.bets.matches[match.$id].points === 5,
-								'label-primary': public.user.bets.matches[match.$id].points === 4,
-								'label-default': public.user.bets.matches[match.$id].points === 3, 
-								'label-warning': public.user.bets.matches[match.$id].points === 1,
-								'pull-right': true}">
+					class="label"
+					ng-class="public.matchCss(public.user.bets.matches[match.$id].points)">
 					<span class="glyphicon glyphicon-ok"></span> {{public.user.bets.matches[match.$id].points}} pontos
 				</span>
 
@@ -48,9 +43,10 @@
 
 				<span ng-show="!match.result" class="pull-right"><small>Resultado não cadastrado.</small></span>
 
+				<div>
+					<b>{{public.user.bets.matches[match.$id].home}}x{{public.user.bets.matches[match.$id].away}}</b>
 				<small>
-					<div><b>{{match.result.home}}x{{match.result.away}}</b>
-					(Palpite: {{public.user.bets.matches[match.$id].home}}x{{public.user.bets.matches[match.$id].away}})</div>
+					(Resultado: {{match.result.home}}x{{match.result.away}})</div>
 				</small>			
 			</h4>
 			<h4><small ng-hide="result.length">Pontos marcados nos jogos serão mostrados aqui.</small></h4>

@@ -2,6 +2,7 @@
 	<div class="row">
 		<div class="col-xs-12 col-md-10">
 			<h3>
+				<span class="label label-warning" ng-show="match.current.status === 'open'">NÃO REALIZADO</span>
 				<span class="label label-danger" ng-show="match.current.status === 'running'">ENCERRADO</span>
                 <small> {{match.current.datetime | date: 'dd/MM H:mm'}} | {{match.current.location}}</small>
 			</h3>
@@ -39,6 +40,7 @@
 -->
 	<div class="row" ng-hide="match.current.status === 'open'">
 		<div class="col-xs-12 col-md-6">
+			<!-- <ul class="nav nav-tabs"> -->
 			<ul class="nav nav-tabs" ng-if="match.user.league[1]">
 				<li role="presentation" ng-class="{'active': match.leagueFilter === league}" ng-repeat="league in match.user.league"><a href ng-click="match.leagueFilter = league">{{league}} Campeonato</a></li>
 			</ul>
@@ -47,10 +49,10 @@
 				<a ui-sref="app.public({uid: user.uid})">{{user.name}}</a>
 				
 				<span class="pull-right" ng-show="match.current.status === 'closed'">
-
-					<span class="label" ng-class="{'label-success': user.points === 7, 'label-info': user.points === 5, 'label-warning': user.points === 3, 'label-primary': user.points === 1}" ng-show="user.points">
-						<span class="glyphicon glyphicon-ok"></span> {{user.points}} pontos</span>
-						<span class="label label-default" ng-show="!user.points"><span class="glyphicon glyphicon-remove"></span> 0 pontos</span>
+					<span class="label" ng-class="match.matchCss(user.points)" 
+										ng-show="user.points">
+					<span class="glyphicon glyphicon-ok"></span> {{user.points}} pontos</span>
+					<span class="label label-danger" ng-show="!user.points"><span class="glyphicon glyphicon-remove"></span> 0 pontos</span>
 				</span>
 
 				<span class="pull-right" ng-show="match.current.status === 'running'">

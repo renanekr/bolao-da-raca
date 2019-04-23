@@ -2,3 +2,13 @@
 
 User-agent: *
 Disallow: /
+
+User-agent: Mediapartners-Google
+Disallow: /#!/admin
+Allow: /
+
+User-agent: Googlebot
+Disallow: /#!/admin
+Allow: /
+
+Sitemap: http://bolaosocial.com.br/sitemap.xml

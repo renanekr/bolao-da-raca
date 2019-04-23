@@ -23,7 +23,7 @@
     function getUser(uid) {
       return users.$loaded()
       .then(ref => {
-        console.log('getUser',ref.$getRecord(uid));
+        // console.log('getUser',ref.$getRecord(uid));
         
         return ref.$getRecord(uid);
       });

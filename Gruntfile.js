@@ -343,7 +343,7 @@ module.exports = function (grunt) {
     ngtemplates: {
       dist: {
         options: {
-          module: 'bolaodaracaApp',
+          module: 'bolaosocialApp',
           htmlmin: '<%= htmlmin.dist.options %>',
           usemin: 'scripts/scripts.js'
         },
@@ -424,7 +424,7 @@ module.exports = function (grunt) {
       dist: [
         'copy:styles',
         // 'imagemin',
-        'svgmin'
+        //'svgmin'
       ]
     },
 

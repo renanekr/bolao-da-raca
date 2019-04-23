@@ -99,7 +99,7 @@
 		class="col-xs-12 match-block" 
 		ng-repeat="match in bets.data.matches | orderBy: 'datetime' : !bets.onlyOpen | open: bets.onlyOpen : bets.now">
 
-			<div class="col-sm-10">
+			<div class="col-sm-9">
 				<h4>
 					<span class="label label-info" ng-show="bets.now < match.datetime - bets.timeLimit && !match.result"><span class="glyphicon glyphicon-pencil"></span> Aberto</span>
 					<span class="label label-default" ng-show="bets.now > match.datetime - bets.timeLimit && !match.result"><span class="glyphicon glyphicon-ban-circle"></span> Fechado</span>
@@ -108,7 +108,7 @@
 					<!-- <small> {{match.datetime | date: 'dd/MM H:mm'}}</small> -->
 				</h4>
 			</div>
-			<div class="col-sm-10 hidden-xs">
+			<div class="col-sm-9 hidden-xs">
 				<h3>
 					<small>{{match.group}} | {{match.round}} | {{match.location}}</small>
 					<br />
@@ -121,7 +121,7 @@
 				</h3>
 			</div>
 	
-			<div class="col-sm-10 visible-xs-block text-center">
+			<div class="col-sm-9 visible-xs-block text-center">
 				<h3>
 					<small>{{match.group}} | {{match.round}} | {{match.location}}</small>
 					<br />
@@ -135,7 +135,7 @@
 				</h3>
 			</div>
 
-			<div class="col-xs-12 col-sm-2 text-center">
+			<div class="col-xs-12 col-sm-3 text-center">
 				<h3 ng-hide = "bets.now > match.datetime - bets.timeLimit || match.result">
 					<small ng-show="bets.user.bets.matches[match.$id]"> Alterar Palpite</small>
 					<br />
@@ -145,6 +145,7 @@
 							{{bets.user.bets.matches[match.$id].away}}
 						</span>
 					</a>
+					
 					<small ng-show="!bets.user.bets.matches[match.$id]">Informe o Palpite</small>
 					<input
 						ng-if="bets.inputs[match.$id] || !bets.user.bets.matches[match.$id]"  
@@ -158,6 +159,8 @@
 						placeholder="Formato: 0x0"
 						ng-keypress="bets.submitBetOnEnter($event, bets.matchBet[match.$id], match.$id)">
 				</h3>
+				<small ng-show="bets.user.bets.matches[match.$id]">(Atualizado em: <b>{{bets.user.bets.matches[match.$id].updated | date: 'dd/MM/yyyy HH:mm:ss'}}</b>)</small>
+					
 				<h3 ng-show="bets.now > match.datetime - bets.timeLimit && !match.result">
 					<span ng-show="bets.user.bets.matches[match.$id]">
 						<small>Palpite: 

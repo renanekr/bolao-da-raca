@@ -12,7 +12,6 @@
 
     vm.inputs = {};
     vm.matchBet = {};
-    vm.matchBetDefault;
     vm.now = new Date().getTime();
     vm.data = tour.data;
     vm.user = user;
@@ -78,12 +77,7 @@
     vm.submitBetOnEnter = function(event, bet, matchId) {
       console.log(bet);
       if (event.keyCode === 13) {
-        if (matchId == null){
-          console.log("matchID null", bet);
-        }else{
           vm.updateBet(bet, matchId);
-        }
-        
       }
     };
 

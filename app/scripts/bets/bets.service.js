@@ -63,6 +63,7 @@
       let away;
       let round;
       let group;
+      let updated;
 
       bet = bet.trim();
 
@@ -73,6 +74,7 @@
         away = bet[bet.length - 1];
         round = matchRound;
         group = matchGroup;
+        updated = new Date().getTime();
       } else {
         throw new Error('O formato é inválido');
       }
@@ -81,7 +83,8 @@
         home: home,
         away: away,
         round: round,
-        group: group
+        group: group,
+        updated: updated
       };
     }
   }

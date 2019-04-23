@@ -3,13 +3,13 @@
 
   /**
    * @ngdoc overview
-   * @name bolaodaracaApp
+   * @name bolaosocialApp
    * @description
    * # bolaodaracaApp
    *
    * Main module of the application.
    */
-  angular.module('bolaodaracaApp', ['appCore', 'myBets', 'user', 'admin']);
+  angular.module('bolaosocialApp', ['appCore', 'myBets', 'user', 'admin']);
 
   angular.module('appCore', [
     'ngMessages',

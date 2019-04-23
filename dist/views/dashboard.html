@@ -7,12 +7,23 @@
 				<a class="btn btn-success" ng-hide="dashboard.promo.users[dashboard.user.uid]" href ng-click="dashboard.replyToPromo(dashboard.promo.current, dashboard.user, true)">Estou chegando!</a>
 				<em ng-show="dashboard.promo.users[dashboard.user.uid]">Você marcou que está vindo <a href ng-click="dashboard.replyToPromo(dashboard.promo.current, dashboard.user, null)">Não estou indo</a></em>			
 			</div>	
-		</div> -->
+		</div> 
+
+		<div class="form-group">
+			<select class="form-control" 
+				ng-options="league for league in dashboard.leagues" 
+				ng-model="league"
+				ng-change="dashboard.changeTournament(league)"
+			>
+				{{league}}
+				<option value="" disabled selected hidden>Selecione o Bolão</option>
+			</select>
+		</div>
+		-->
 		<div class="col-xs-12 col-md-6">
 			<div class="row">
 
 				<div class="col-xs-12">
-					
 					<div class="panel panel-info" ng-class="{'panel-info': dashboard.user.bets, 'panel-warning': !dashboard.user.bets}">
 						<div class="panel-heading">
 							<h3 class="panel-title">
@@ -21,6 +32,7 @@
 							</h3>
 						</div>
 						<div class="panel-body" ng-class="{'bg-warning': !dashboard.user.bets}">
+							
 							<div class="match-entry" ng-repeat="match in dashboard.tour.data.matches | orderBy: 'datetime' : true | open: false | noResult | limitTo: 2 as currentMatches">
 								<span class="label label-danger" ng-show="dashboard.now > match.datetime - dashboard.timeLimit">ENCERRADO</span><small> {{match.datetime | date: 'dd/MM H:mm'}} | {{match.location}}</small><br>
 								
@@ -62,9 +74,13 @@
 							</div>
 							
 							<div class="text-center">
-								<button class="btn btn-primary" ui-sref="app.myBets({filter: true})" ng-show="dashboard.user.bets">Palpites Em Aberto</button>
-								<button class="btn btn-warning" ui-sref="app.myBets({filter: true})" ng-hide="dashboard.user.bets">Cadastrar Palpites!</button>
-							</div>
+								<div ng-hide="dashboard.user.bets">
+									<span class="label label-danger text-center" >ATENÇÃO: você ainda não fez nenhum palpite!</span>
+									<br>
+									<button class="btn btn-warning" ui-sref="app.myBets({filter: true})">Cadastrar Palpites!</button>
+								</div>
+								<button class="btn btn-warning" ui-sref="app.myBets({filter: true})" ng-show="dashboard.user.bets">Palpites Em Aberto</button>
+								</div>
 						</div>
 					</div>
 				</div>
@@ -97,13 +113,17 @@
 									
 								
 								<span class="pull-right point-label">
-									<span class="label" ng-class="{'label-success': dashboard.user.bets.matches[match.$id].points === 7, 'label-info': dashboard.user.bets.matches[match.$id].points === 5, 'label-warning': dashboard.user.bets.matches[match.$id].points === 3, 'label-primary': dashboard.user.bets.matches[match.$id].points === 1}" ng-show="dashboard.user.bets.matches[match.$id].points"><span class="glyphicon glyphicon-ok"></span> {{dashboard.user.bets.matches[match.$id].points}} pontos</span>
-									<span class="label label-default" ng-hide="dashboard.user.bets.matches[match.$id].points || !match.result"><span class="glyphicon glyphicon-remove"></span> 0 pontos</span>
+									<span class="label" 
+										ng-class="dashboard.matchCss(dashboard.user.bets.matches[match.$id].points)"
+										ng-show="dashboard.user.bets.matches[match.$id].points">
+										<span class="glyphicon glyphicon-ok"></span> {{dashboard.user.bets.matches[match.$id].points}} pontos
+									</span>
+									<span class="label label-danger" ng-hide="dashboard.user.bets.matches[match.$id].points || !match.result"><span class="glyphicon glyphicon-remove"></span> 0 pontos</span>
 								</span>
 								<hr style="margin: 5px" />
 							</div>
 							<div class="text-center">
-								<button class="btn btn-primary" ui-sref="app.myBets({filter:false})">Jogos Encerrados</button>		
+								<button class="btn btn-warning" ui-sref="app.myBets({filter:false})">Jogos Encerrados</button>		
 							</div>
 						</div>
 					</div>
@@ -112,15 +132,74 @@
 		</div>
 
 		<div class="col-xs-12 col-md-6">
+	
+				<div class="panel panel-danger">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							<span class="glyphicon glyphicon-pushpin"></span>
+							Palpite Padrão
+						</h3>
+					</div>
+					<div class="panel-body">
+						<strong>Este placar será usado caso você deixe palpites em branco!</strong>
+						<div ng-show="dashboard.betDefaultEdit || !dashboard.user.bets.default">
+							<small>Informe o seu palpite padrão (time da casa x time visitante)</small>
+							<input
+								name="betDefault"
+								size="3"
+								class="form-control bet-input"
+								type="text" 
+								ng-model="dashboard.betDefault"
+								eb-focus="dashboard.betDefaultEdit"
+								placeholder="Formato: 0x0 ou 00"
+								ng-keypress="dashboard.submitBetDefaultOnEnter($event, dashboard.betDefault)">
+							<br>
+							<small>(Para salvar, pressione enter)</small>
+						</div>
+						<div class="text-center" ng-show="!dashboard.betDefaultEdit" ng-hide="!dashboard.user.bets.default">
+							<small>(Clique no palpite para alterar)</small>
+							<h1>
+								<a href ng-click="dashboard.betDefaultEdit = true">
+									<span class="label label-success">{{dashboard.betDefault}}</span>
+								</a>
+							</h1>
+							<small>Atualizado em <b>{{dashboard.betDefaultDate | date: 'dd/MM/yyyy HH:mm:ss'}}</b></small>		
+						</div>
+					</div>
+					<div class="panel-footer" ng-show="dashboard.user.bets.default.history">
+						<a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+								<span class="glyphicon glyphicon-time"></span>
+							<small>Ver histórico</small>
+					  	</a>			  
+						<div class="collapse" id="collapseExample">
+							<table class="table table-striped table-hover table-condensed table-responsive">
+								<thead>
+									<tr>
+										<th scope="col">Palpite anterior</th>
+										<th scope="col">Inserido em</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr scope="row" ng-repeat="hist in dashboard.user.bets.default.history | orderBy: 'updated' : true">
+										<td>{{hist.home}} x {{hist.away}}</td>
+										<td>{{hist.updated | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+
+		</div>
+
+		<div class="col-xs-12 col-md-6">
 			<div class="panel panel-success">
 				<div class="panel-heading">
-					
 					<h3 class="panel-title">
 						<span class="glyphicon glyphicon-star-empty"></span>
 						Ranking Geral 
 						<!-- <small class="pull-right">atualizado em {{dashboard.rankingLastUpdate}}</small> -->
-					</h3>
-						
+					</h3>			
 				</div>
 				<div class="panel-body">
 						<form class="form-inline">
@@ -128,11 +207,11 @@
 									<label for="filter">Filtrar por</label>
 									<select id="filter" ng-model="filter" ng-change="dashboard.filterRanking(filter)" class="form-control">
 										<option selected>Todas</option>
-										<option>Fase 1</option>
-										<option>Fase 2</option>
+										<option ng-repeat="phase in dashboard.phases">{{phase}}</option>
+
+										<!-- <option>Fase 2</option>
 										<option>Fase 3</option>
-										<option>Fase 4</option>
-										<option>Fase 5</option>
+										<option>Fase 4</option> -->
 									</select>
 								</div>
 							</form>

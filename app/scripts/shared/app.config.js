@@ -20,19 +20,21 @@
 
     // Points rewarded for bets
     rules: {
-      exactResult: 7,
-      resultDifScore: 5,
+      exactResult: 9,
+      exactResultBonus: 3,
       resultDraw: 4,
-      result: 3,
-      teamScore: 1,
-      finalWinner: 3,
-      topScorer: 3
+      winnerScore: 6,
+      loserScore: 3,
+      resultDifScore: 1,
+      result: 3, //default
+      matchBonusGoals: 5
     },
 
     // Eligible competitions
     leagues: ['Brasileirão Series A e B 2019', 'Brasileirão Serie B 2018'],
     currentLeague: ['Brasileirão Series A e B 2019'],
     currentYear: ['2019'],
+    phases: ['Fase 1', 'Fase 2', 'Fase 3', 'Fase 4', 'Fase 5', 'Fase 6', 'Fase 7'],
     
     //Conversores de Data
     //http://www.ruddwire.com/handy-code/date-to-millisecond-calculators/#.WzA4Yy3OrOQ
@@ -75,8 +77,9 @@
   appRouting.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider'];
 
   function appRouting($stateProvider, $urlRouterProvider, $locationProvider) {
+    // $locationProvider.html5Mode(true);
     $urlRouterProvider.otherwise('/dashboard');
-
+    
     $stateProvider
     .state('app', {
       abstract: true,
@@ -120,7 +123,7 @@
       }
     })
     .state('app.rules', {
-      url: '/rules',
+      url: '/rules}',
       templateUrl: 'views/rules.html'
     })
     .state('app.contact', {

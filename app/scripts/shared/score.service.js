@@ -67,54 +67,78 @@
 
     /* BOLAO REGRAS
     -------------------------------------------
-    7 = Acertou placar cravado
-    5 = Acertou resultado e a diferença de gols (com exceção ao empate)
-    4 = Acertou resultado empate (não cravando)
-    3 = Acertou somente o resultado (com exceção do empate)
-    1 = Acertou placar (número de gols) de uma das equipes */
+    15 pontos Placar Exato com 5 ou mais gols na partida OK
+    12 pontos Placar Exato OK
+    9 pontos Placar do Vencedor OK
+    7 pontos Empate Incorreto OK
+    6 pontos Placar do Perdedor OK
+    4 pontos Diferença de gols OK
+    3 pontos Acertar o vencedor da partida sem nenhuma das combinações acima OK
+    */
 
     function calculateScore(user, result, bet) {
-      // console.log('calculateScore');
-      // console.log(user);
-
+      // console.log('calculateScore', user);
       let score = 0;
+      let matchScore = 0;
       exactResult = false;
       
       if (bet) {
         let matchWinner = decideWinner(result);
-        // console.log('match winner: ' + matchWinner);
         let betWinner = decideWinner(bet);
-        // console.log('bet winner: ' + betWinner);
+        let matchLoser = decideLoser(result);
+        let betLoser = decideLoser(bet);
+        
+        matchScore = parseInt(bet.home) + parseInt(bet.away);
+        // matchScore = parseInt(bet.home) + parseInt(bet.away);
+        // console.log('matchWinner', matchWinner, 'betWinner', betWinner)
+        // console.log('matchLoser', matchLoser, 'betLoser', betLoser)
+        // console.log('matchScore', matchScore, bet.home, bet.away);
 
+        if (matchWinner === betWinner) {
+          //Acerto do resultado (vitoria / empate) = 3 pontos
+          console.log('result');
+          score += rules.result;
+
+        } 
         if (result.home === bet.home && result.away === bet.away) {
-          //Acertou placar cravado = 7
-          // console.log('exactResult');
-          score += rules.exactResult;
+          //Acerto do placar cravado = 12 ou 15 (mais de X gols rules.matchScore)
+          console.log('exactResult', score);
+          score += matchScore >= rules.matchBonusGoals ? rules.exactResult + rules.exactResultBonus : rules.exactResult;
           exactResult = true;
-          
-        } else if (matchWinner != 'draw' && matchWinner === betWinner && ((result.home - result.away) === (bet.home - bet.away))) {
-          //Acertou resultado e a diferença de gols (com exceção ao empate) = 5
-          score += rules.resultDifScore
-
-        } else if (decideWinner(result)==='draw' && decideWinner(bet)==='draw') {
-          score += rules.resultDraw
-
-        } else if (matchWinner === betWinner) {
-            //Acerto do resultado (vitoria / empate) = 3 pontos
-            // console.log('result');
-            score += rules.result;
-
-        } else if (result.home === bet.home || result.away === bet.away) {
-          //Acerto do placar de uma das equipes = 1 ponto
-          // console.log('teamScore');
-          score += rules.teamScore;
-
         }
+        //if (matchWinner != 'draw' && 
+        if (matchWinner != 'draw' && exactResult === false){
+          //Resultado não é empate
+          console.log('NOT draw');
 
+          if (matchWinner === betWinner && ((result.home - result.away) === (bet.home - bet.away))) {
+            //Acerto da diferença de gols (com exceção ao empate) = 4 (3+1) 
+            console.log('diffScore');
+            score += rules.resultDifScore
+  
+          };
+          console.log('placar', result[matchWinner], bet[matchWinner]);
+          if (matchWinner === betWinner && result[matchLoser][0] === bet[matchLoser][0]) {
+            //Acerto do placar do perdedor = 6 (3+3)
+            console.log('loserScore');
+            score += rules.loserScore;
+          }
+          if (matchWinner === betWinner && result[matchWinner][0] === bet[matchWinner][0]) {
+            //Acerto do placar do vencedor = 9 (6+3)
+            console.log('winnerScore');
+            score += rules.winnerScore;
+          }
+        }else{
+          //Resultado é empate
+          if (exactResult === false && decideWinner(result)==='draw' && decideWinner(bet)==='draw') {
+            console.log('incorrect draw');
+            score += rules.resultDraw
+          }
+        }
         // console.log('result casa: '+ result.home + 'x palpite casa: ' + bet.home);
         // console.log('result visitante: ' + result.away + 'x palpite visitante: ' + bet.away);
 
-        // console.log('score: ' + score);
+        console.log('total score: ' + score);
       }
 
       return score;
@@ -132,6 +156,13 @@
       }
 
       return winner;
+    }
+    function decideLoser(result) {
+      let loser;
+
+      loser = decideWinner(result) === 'home' ? 'away' : 'home';
+
+      return loser;
     }
 
     function getTotalScore(user) {
