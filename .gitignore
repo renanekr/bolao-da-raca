@@ -2,6 +2,8 @@
 apoio
 db
 
+dist
+
 # Logs
 logs
 *.log

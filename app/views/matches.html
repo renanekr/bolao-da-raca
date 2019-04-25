@@ -55,16 +55,17 @@
 							{{match.datetime | date : 'dd/MM H:mm'}}
 							<span class="glyphicon glyphicon-pencil"></span>
 						</div>
-							<!-- ng-submit="matches.updateDate(match, matches.table.datetime)"> -->
 						<form 
 							ng-if="matches.table.editDate == match.$id" 
 							name="dateForm" 
-							class="form-inline" 
+							class="form-inline"
+						>
 							<div class="form-group">
 								<datetimepicker ng-model="matches.matchDate" 
 									date-format="dd/MM/yyyy" 
 									date-options="dateOptions" 
-									show-meridian="false" >
+									show-meridian="false" 
+								>
 								</datetimepicker>
 								<a href ng-click="matches.updateDate(match, matches.matchDate)"><span class="text-success glyphicon glyphicon-ok"></span></a>
 								<a href ng-click="matches.table.editDate = false"><span class="text-danger glyphicon glyphicon-remove"></span></a>
