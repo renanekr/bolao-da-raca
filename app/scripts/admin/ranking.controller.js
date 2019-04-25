@@ -13,6 +13,7 @@
     vm.orderBy = 'name';
     vm.reverse = false;
     // vm.leagueFilter = vm.leagues[0];
+    vm.phases = APP_CONFIG.phases;
     vm.userBets = {};
 
 
@@ -48,6 +49,14 @@
         
       });
       
+    };
+
+    vm.resetRanking = function(){
+      vm.players.forEach(element => {
+        console.log(element.totalScore);
+        element.totalScore = 0;
+        userService.saveUser(element);
+      })
     };
 
   }

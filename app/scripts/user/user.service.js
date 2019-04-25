@@ -29,6 +29,22 @@
       });
     }
 
+    function getUserTotalBets(uid) {
+      //NAO RETORNA O TAMANHO DO ARRAY
+      console.log('getUserTotalBets');
+      let matchesRef = firebase.database().ref('users/' + uid + '/bets/matches')
+      console.log(matchesRef);
+      let matches = $firebaseArray(matchesRef);
+      console.log(matches);
+      if (matches) {
+        return matches.length;
+      } else {
+        let error = ("Falha ao carregar palpites");
+
+        return $q.reject(error);
+      }
+    };
+
     function getUserMatchBets(uid) {
       // console.log(uid);
       // console.log(APP_CONFIG.fbUrl + 'users/' + uid + '/bets/matches');
@@ -86,10 +102,12 @@
           name: newName,
           createdAt: date.getTime(),
           admin: false,
+          active: true,
           uid: newUid,
           league: [newLeague],
           totalScore: 0,
           extraPoints: 0,
+          exactResults: 0
           
         };
 
@@ -103,6 +121,8 @@
       .then(publicData => {
         return publicData.$add({
           uid: newUid,
+          email: newEmail,
+          active: true,
           league: [newLeague],
           score: 0
         });
@@ -148,6 +168,7 @@
           email: credentials.email,
           createdAt: date.getTime(),
           admin: false,
+          active: true,
           uid: newUid,
           league: [pending.league]
         };
@@ -162,8 +183,11 @@
       .then(publicData => {
         return publicData.$add({
           uid: newUid,
+          email: newEmail,
+          active: true,
           league: [pending.league],
-          score: 0
+          score: 0,
+          exactResults: 0,
         });
       });
     }
@@ -189,7 +213,8 @@
             exactResults: user.exactResults || 0,
             league: user.league,
             bets: user.bets || null,
-            company: user.company || null,
+            email: user.email || null,
+            active: user.active || true //If founded, set true
           });
         } else {
           found.name = user.name || null;
@@ -197,7 +222,8 @@
           found.exactResults = user.exactResults;
           found.league = user.league;
           found.bets = user.bets || null;
-          found.company = user.company || null;
+          found.email = user.email || null;
+          found.active = user.active || false; //fir not founded, set false
 
           return publicData.$save(found);
         }
@@ -242,6 +268,7 @@
       register: register,
       getUser: getUser,
       createUser: createUser,
+      getUserTotalBets, getUserTotalBets,
       getUserMatchBets: getUserMatchBets,
       saveUser: saveUser,
       removeUser: removeUser,

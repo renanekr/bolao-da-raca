@@ -16,6 +16,17 @@
   
     vm.promo = adminService.promo;
 
+
+    // vm.players.forEach(function(player, index) {
+    //   console.log(index, player.name, player.league);
+    // })
+
+    vm.getUserTotalBets = function(uid) {
+      var total;
+      // return userService.getUserTotalBets(uid);
+      console.log(uid);
+    };
+
     vm.activateUser = function(user) {
       var msg;
       // console.log(user);
@@ -30,6 +41,7 @@
         toastr.error(error);
       });
     };
+
     vm.adminUser = function(user) {
       var msg;
       // console.log(user);
@@ -44,31 +56,7 @@
         toastr.error(error);
       });
     };
-/*
-    vm.makeUserAdmin = function(user) {
-      user.admin = true;
 
-      userService.saveUser(user)
-      .then(() => {
-        toastr.success(user.email + ' tornou-se administrador.');
-      })
-      .catch(error => {
-        toastr.error(error);
-      });
-    };
-
-    vm.makeUserSimple = function(user) {
-      user.admin = false;
-
-      userService.saveUser(user)
-      .then(() => {
-        toastr.error(user.email + ' NÃO é mais administrador.');
-      })
-      .catch(error => {
-        toastr.error(error);
-      });
-    };
-*/
     vm.addNewEmails = function(list, league) {
       if (list) {
         list = list.replace(/\n/g, '');
@@ -97,8 +85,8 @@
     };
 
     vm.addNewParticipant = function(uid, email, name, league) {
-      console.log('addNewParticipants');
-      console.log('uid: ' + uid + ', email: ' + email + ', name: ' + name + ', liga: ' + league);
+      // console.log('addNewParticipants');
+      // console.log('uid: ' + uid + ', email: ' + email + ', name: ' + name + ', liga: ' + league);
 
       userService.createUser(uid, email, name, league)
       .then(resp => {
@@ -168,4 +156,5 @@
       }
     };
   }
+
 })();

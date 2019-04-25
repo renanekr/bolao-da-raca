@@ -226,14 +226,17 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr ng-repeat="player in dashboard.users | orderBy: ['score', 'exactResults'] : true | league: dashboard.leagueFilter track by player.uid" >
+							<tr>{{dashboard.tour.data.matches.match[0]}}</tr>
+							<tr ng-show="{{player.active}}" ng-repeat="player in dashboard.users | orderBy: ['score', 'exactResults'] : true | league: dashboard.leagueFilter track by player.uid" >
 								<td>{{$index +1}}</td>
 								<!-- <td>
 									<span class="glyphicon glyphicon-chevron-up" style="color:green"></span>
 									<span class="glyphicon glyphicon-chevron-down" style="color:red"></span>
 									<span class="glyphicon glyphicon-stop" style="color:gray"></span>
 								</td> -->
-								<td><a ui-sref="app.public({uid: player.uid})">{{player.name}}</a></td>
+								<td ng-show="{{player.active}}">
+									<a ui-sref="app.public({uid: player.uid})">{{player.name ? player.name : (player.email ? player.email : player.uid)}}</a>
+								</td>
 								<td>{{player.exactResults}}</td>
 								<td>{{player.score}}</td>
 							</tr>

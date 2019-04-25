@@ -39,6 +39,7 @@ module.exports = function(config) {
       'bower_components/angularjs-datepicker/dist/angular-datepicker.js',
       'bower_components/moment/moment.js',
       'bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
+      'bower_components/angular-ui-bootstrap-datetimepicker/datetimepicker.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       "app/scripts/**/*.js",

@@ -27,6 +27,7 @@
       getMatch: getMatch,
       saveMatch: saveMatch,
       updateResult: updateResult,
+      updateDate: updateDate,
       getRankingLastUpdate: getRankingLastUpdate
     };
 
@@ -171,12 +172,15 @@
       });
       
     }
-
+    function updateDate(match, date) {
+      match.datetime = date.getTime();
+      return saveMatch(match)
+    };
     function updateResult(match, result) {
-      console.log('Tour - updateResult');
+      // console.log('Tour - updateResult');
       let regexp = new RegExp('^[0-9].*[0-9]$');
 
-      console.log(data.ranking)
+      // console.log(data.ranking)
 
       match.result = {};
 
@@ -193,8 +197,7 @@
         match.result.home = result[0];
         match.result.away = result[result.length - 1];
       }
-      console.log('saveMatch');
-      console.log(result);
+      // console.log('saveMatch', result);
       return saveMatch(match)
       .then(resp => {
         return scoreService.updateUserScores(match);

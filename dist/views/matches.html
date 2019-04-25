@@ -2,8 +2,6 @@
 	<div class="row">
 		<!-- 	<a ng-click="matches.updateResults()">Atualizar Ranking</a> -->
 		<button class="btn btn-success" ng-click="matches.updateResults()">Atualizar Ranking</button>
-		<hr>
-
 		<div class="col-xs-12" ng-show="matches.uploadForm">
 			<h4>Importar partidas</h4>
 			<form name="matchesForm" ng-submit = "matches.upload(matches.form.list, matchesForm)">
@@ -32,19 +30,24 @@
 			</form>
 			<table class="table table-hover">
 				<thead>
+					<th>#</th>
 					<th class="text-center col-xs-2" ng-click="matches.table.sortColumn = 'group'; matches.table.reverse = !matches.table.reverse">
 						<span class="glyphicon glyphicon-triangle-bottom" ng-show="matches.table.sortColumn == 'group' && matches.table.reverse"></span>
 						<span class="glyphicon glyphicon-triangle-top" ng-show="matches.table.sortColumn == 'group' && !matches.table.reverse"></span>
-						Grupo</th>
+						Grupo
+					</th>
 					<th class="text-center col-xs-2">Rodada</th>
 					<th class="text-center col-xs-3" ng-click="matches.table.sortColumn = 'datetime'; matches.table.reverse = !matches.table.reverse">
 						<span class="glyphicon glyphicon-triangle-bottom" ng-show="matches.table.sortColumn == 'datetime' && matches.table.reverse"></span>
 						<span class="glyphicon glyphicon-triangle-top" ng-show="matches.table.sortColumn == 'datetime' && !matches.table.reverse"></span>
-						Data</th>
+						Data
+					</th>
 					<th class="text-center col-xs-3">Equipes</th>
 					<th class="text-center col-xs-2">Placar</th>
 				</thead>
+				<tbody>
 				<tr class="text-center" ng-repeat="match in matches.data.matches | orderBy: matches.table.sortColumn : matches.table.reverse | filter: matches.table.filter">
+					<th scope="row">{{$index +1}}</th>
 					<td>{{match.group}}</td>
 					<td>{{match.round}}</td>
 					<td class="text-center">
@@ -114,6 +117,7 @@
 						</form>
 					</td>
 				</tr>
+			</tbody>
 			</table>
 		</div>
 		<div class="col-xs-12" ng-hide="matches.uploadForm">

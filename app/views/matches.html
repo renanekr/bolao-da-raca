@@ -2,8 +2,6 @@
 	<div class="row">
 		<!-- 	<a ng-click="matches.updateResults()">Atualizar Ranking</a> -->
 		<button class="btn btn-success" ng-click="matches.updateResults()">Atualizar Ranking</button>
-		<hr>
-
 		<div class="col-xs-12" ng-show="matches.uploadForm">
 			<h4>Importar partidas</h4>
 			<form name="matchesForm" ng-submit = "matches.upload(matches.form.list, matchesForm)">
@@ -32,58 +30,78 @@
 			</form>
 			<table class="table table-hover">
 				<thead>
+					<th>#</th>
 					<th class="text-center col-xs-2" ng-click="matches.table.sortColumn = 'group'; matches.table.reverse = !matches.table.reverse">
 						<span class="glyphicon glyphicon-triangle-bottom" ng-show="matches.table.sortColumn == 'group' && matches.table.reverse"></span>
 						<span class="glyphicon glyphicon-triangle-top" ng-show="matches.table.sortColumn == 'group' && !matches.table.reverse"></span>
-						Grupo</th>
+						Grupo
+					</th>
 					<th class="text-center col-xs-2">Rodada</th>
 					<th class="text-center col-xs-3" ng-click="matches.table.sortColumn = 'datetime'; matches.table.reverse = !matches.table.reverse">
 						<span class="glyphicon glyphicon-triangle-bottom" ng-show="matches.table.sortColumn == 'datetime' && matches.table.reverse"></span>
 						<span class="glyphicon glyphicon-triangle-top" ng-show="matches.table.sortColumn == 'datetime' && !matches.table.reverse"></span>
-						Data</th>
+						Data
+					</th>
 					<th class="text-center col-xs-3">Equipes</th>
 					<th class="text-center col-xs-2">Placar</th>
 				</thead>
+				<tbody>
 				<tr class="text-center" ng-repeat="match in matches.data.matches | orderBy: matches.table.sortColumn : matches.table.reverse | filter: matches.table.filter">
+					<th scope="row">{{$index +1}}</th>
 					<td>{{match.group}}</td>
 					<td>{{match.round}}</td>
 					<td class="text-center">
-						<div ng-click="matches.table.editDate = match.$id">
+						<div ng-click="matches.initializeMatchDate(match.$id, match.datetime)">
 							{{match.datetime | date : 'dd/MM H:mm'}}
 							<span class="glyphicon glyphicon-pencil"></span>
 						</div>
+							<!-- ng-submit="matches.updateDate(match, matches.table.datetime)"> -->
 						<form 
 							ng-if="matches.table.editDate == match.$id" 
 							name="dateForm" 
 							class="form-inline" 
-							ng-submit="matches.updateDate(match, matches.table.datetime)">
 							<div class="form-group">
-								<div class='input-group date' id='datetimepicker1'>
+								<datetimepicker ng-model="matches.matchDate" 
+									date-format="dd/MM/yyyy" 
+									date-options="dateOptions" 
+									show-meridian="false" >
+								</datetimepicker>
+								<a href ng-click="matches.updateDate(match, matches.matchDate)"><span class="text-success glyphicon glyphicon-ok"></span></a>
+								<a href ng-click="matches.table.editDate = false"><span class="text-danger glyphicon glyphicon-remove"></span></a>
+								<!-- REF: https://www.npmjs.com/package/angular-ui-bootstrap-datetimepicker -->
+
+								<!-- <p class="input-group">
+									<input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+									<span class="input-group-btn">
+									  <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+									</span>
+								</p> -->
+								<!-- <div class='input-group date' id='datetimepicker1'>
 									<input type='text' class="form-control" />
-										<span class="input-group-addon">
-											<span class="glyphicon glyphicon-calendar"></span>
-											<a href ng-click="matches.table.editDate = false"><span class="text-danger glyphicon glyphicon-remove"></span></a>
-										</span>
-								</div>
+									<span class="input-group-addon">
+										<span class="glyphicon glyphicon-calendar"></span>
+										<a href ng-click="matches.table.editDate = false"><span class="text-danger glyphicon glyphicon-remove"></span></a>
+									</span>
+								</div> -->
+								<!-- REF: https://angular-ui.github.io/bootstrap/ -->
+								
+								<!-- <input type='text' class="form-control" id='datetimepicker1' ng-model="datetimepicker1" ng-change="matches.updateDate(match, datetimepicker1)" />
+								<a href ng-click="matches.table.editDate = false"><span class="text-danger glyphicon glyphicon-remove"></span></a>	
 								<script type="text/javascript">
 									$(function () {
-										$('#datetimepicker1').datetimepicker();
+										$('#datetimepicker1').datetimepicker({
+											locale: 'pt-br'
+										});
 									});
-								</script>
+									$('#datetimepicker1').blur(function(){
+										console.log($(this).val());  
+									});
+								</script> -->
 								<!-- REF: 
 									https://eonasdan.github.io/bootstrap-datetimepicker/ 
 									http://embed.plnkr.co/DyLAAX/
 								-->
-
-								<!-- <datepicker>
-									<input 
-										autofocus 
-										eb-focus = "matches.table.editDate === match.$id"
-										size="3"
-										type="text" 
-										class="form-control"
-										ng-model="matches.table.datetime">
-								</datepicker> -->
+								
 							</div>
 						</form>
 					</td>
@@ -114,6 +132,7 @@
 						</form>
 					</td>
 				</tr>
+			</tbody>
 			</table>
 		</div>
 		<div class="col-xs-12" ng-hide="matches.uploadForm">

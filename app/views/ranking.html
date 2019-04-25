@@ -4,12 +4,15 @@
 			<label for="filter">Filtrar por</label>
 			<select id="filter" ng-model="filter" class="form-control">
 				<option selected>Todas</option>
-				<option>Fase 1</option>
+				<option ng-repeat="phase in ranking.phases">{{phase}}</option>
+
+				<!-- <option>Fase 1</option>
 				<option>Fase 2</option>
 				<option>Fase 3</option>
-				<option>Fase 4</option>				
+				<option>Fase 4</option>	 -->
 			</select>
 			<button class="btn btn-success" ng-click="ranking.filterRanking(filter)">Filtrar</button>
+			<button class="btn btn-danger" ng-click="ranking.resetRanking()">Zerar Ranking</button>
 		</form>
 	</div>
 	<hr>
@@ -29,7 +32,7 @@
 				   </tr>
 			   </thead>
 			   <tbody>
-				   <tr ng-repeat="player in ranking.players | orderBy: ['totalScore', 'exactResults'] : true | league: ranking.leagueFilter track by player.uid" >
+				   <tr ng-show="{{player.active}}" ng-repeat="player in ranking.players | orderBy: ['totalScore', 'exactResults'] : true | league: ranking.leagueFilter track by player.uid" >
 					   <th scope="row">{{$index +1}}</th>
 					   <td>{{player.name}}</td>
 					   <td>{{ranking.getObjSize(player.bets.matches)}} <small>(Ver)</small></td>

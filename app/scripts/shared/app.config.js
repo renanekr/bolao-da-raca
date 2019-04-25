@@ -98,7 +98,7 @@
         user: ($firebaseAuthService, userService) => {
           return $firebaseAuthService.$requireSignIn()
           .then((data) => {
-            console.log('$stateProvider resolve')
+            // console.log('$stateProvider resolve')
             return userService.getUser(data.uid);
           });
         }

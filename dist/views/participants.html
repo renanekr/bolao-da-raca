@@ -31,19 +31,20 @@
 						<span class="glyphicon glyphicon-triangle-top" ng-show="participants.orderBy === 'email' && !participants.reverse"></span>
 						<span class="glyphicon glyphicon-triangle-bottom" ng-show="participants.orderBy === 'email' && participants.reverse"></span>
 					</th>
-					<th class="text-center" ng-click="participants.orderBy = 'company' ; participants.reverse = !participants.reverse">Empresa
+					<!-- <th class="text-center" ng-click="participants.orderBy = 'company' ; participants.reverse = !participants.reverse">Empresa
 						<span class="glyphicon glyphicon-triangle-top" ng-show="participants.orderBy === 'company' && !participants.reverse"></span>
 						<span class="glyphicon glyphicon-triangle-bottom" ng-show="participants.orderBy === 'company' && participants.reverse"></span>
-					</th>
+					</th> -->
 					<th class="text-center" ng-click="participants.orderBy = 'lastLogin' ; participants.reverse = !participants.reverse">Último login
 						<span class="glyphicon glyphicon-triangle-top" ng-show="participants.orderBy === 'lastLogin' && !participants.reverse"></span>
 						<span class="glyphicon glyphicon-triangle-bottom" ng-show="participants.orderBy === 'lastLogin' && participants.reverse"></span>
 					</th>
 					<!-- <th class="text-center">Campeão</th>
 					<th class="text-center">Goleiro</th> -->
+					<th class="text-center">Padrão</th>
 					<th class="text-center">Ativo</th>
 					<th class="text-center">Admin</th>
-					<th class="text-center">Pontos Extra</th>
+					<!-- <th class="text-center">Pontos Extra</th> -->
 				</thead>
 				<tbody>
 					<tr ng-repeat="user in participants.players | orderBy: participants.orderBy : participants.reverse | filter: participants.listFilter | league: participants.leagueFilter"
@@ -52,7 +53,7 @@
 						<td nowrap>{{user.name}}</td>
 						<td class="text-center" nowrap>{{user.uid}}</td>
 						<td><span uib-tooltip="{{user.uid}}">{{user.email}}</span></td>
-						<td class="text-center" nowrap>{{user.company}}</td>
+						<!-- <td class="text-center" nowrap>{{user.company}}</td> -->
 						<td class="text-center" nowrap>{{user.lastLogin | date: 'dd/MM H:mm'}}</td>
 						<!-- <td class="text-center">
 							{{user.bets.winner.longName}}
@@ -63,6 +64,11 @@
 							<span ng-hide="user.bets.topScorer && user.bets.winner"><span class="glyphicon glyphicon-remove text-danger"></span></span>
 						</td> -->
 						<td class="text-center" nowrap> 
+							<span ng-show="!user.bets.default" class="text-danger glyphicon glyphicon-thumbs-down"></span>
+							<span ng-show="user.bets.default" class="text-primary font-weight-bold">{{user.bets.default.home}}x{{user.bets.default.away}}</span>
+							
+						</td>
+						<td class="text-center" nowrap> 
 							<!-- <a ng-hide="!user.active" ng-click="participants.activateUser(user)"><span class="glyphicon glyphicon-ok"></span></a>
 							<a ng-hide="user.active" ng-click="participants.activateUser(user)"><span class="glyphicon glyphicon-remove"></span></a> -->
 							<a ng-click="participants.activateUser(user)"><span ng-class="{'text-danger': !user.active, 'text-success': user.active, 'glyphicon': true, 'glyphicon-ok': user.active, 'glyphicon-remove': !user.active }"></span></a>				
@@ -71,14 +77,14 @@
 							<a ng-click="participants.adminUser(user)"><span ng-class="{'text-danger': !user.admin, 'text-success': user.admin, 'glyphicon': true, 'glyphicon-ok': user.admin, 'glyphicon-remove': !user.admin }"></span></a>
 							<!-- <a ng-hide="!user.admin" ng-click="participants.makeUserSimple(user)"><span class="glyphicon glyphicon-remove"></span></a> -->
 						</td>	
-						<td class="text-left" nowrap>
+						<!-- <td class="text-left" nowrap>
 							<span class="label label-success" ng-show="user.extraPoints">{{user.extraPoints}}</span>
 							<span ng-hide="user.extraPoints">0</span>
 							<span class="pull-right">
 								<a href ng-click="participants.addExtraPoints(user,1)" ng-hide="user.extraPoints === 6"><span class="glyphicon glyphicon-plus-sign"></span></a>
 								<a href ng-click="participants.addExtraPoints(user,-1)" ng-show="user.extraPoints"><span class="glyphicon glyphicon-minus-sign"></span></a>
 							</span>
-						</td>
+						</td> -->
 					</tr>
 				</tbody>
 			</table>

@@ -25,5 +25,5 @@
 
   angular.module('user', []);
 
-  angular.module('admin', []);
+  angular.module('admin', ['ui.bootstrap.datetimepicker']);
 })();
