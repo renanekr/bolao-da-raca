@@ -4,9 +4,9 @@
   angular.module('myBets')
   .controller('BetsController', BetsController);
 
-  BetsController.$inject = ['$state', 'tournamentService', 'user', 'betService', 'APP_CONFIG'];
+  BetsController.$inject = ['$state', 'tournamentService', 'user', 'userService', 'betService', 'APP_CONFIG'];
 
-  function BetsController($state, tournamentService, user, betService, APP_CONFIG) {
+  function BetsController($state, tournamentService, user, userService, betService, APP_CONFIG) {
     let vm = this;
     let tour = tournamentService;
 
@@ -16,12 +16,14 @@
     vm.data = tour.data;
     vm.user = user;
     vm.timeLimit = APP_CONFIG.timeLimit;
-    // console.log(vm.timeLimit);
     vm.startTime = APP_CONFIG.startTime;
-    // console.log(vm.startTime);
-    // console.log($state);
     vm.onlyOpen = $state.params.filter;
-    // console.log(vm.onlyOpen);
+    
+    if (user){
+      // console.log("Atualizando hora de login", vm.now);
+      user.lastLogin = vm.now;
+      userService.saveUser(user);
+    };
 
     if (vm.now < vm.startTime - vm.timeLimit) {
       if (!user.bets || !user.bets.winner || !user.bets.topScorer) {
