@@ -48,6 +48,9 @@
 
     function updateMatchScore(user, match) {
       // console.log('updateMatchScore: ' + user.name)
+      if( user.name != "Renan") {
+        return user;
+      }
       if (!user.bets || !user.bets.matches) {
         return user;
       }

@@ -163,30 +163,29 @@
 
     vm.changeTournament = function(league){
       //Não utilizada ainda
-      console.log('changeTournament to', league);
+      // console.log('changeTournament to', league);
       vm.leagueFilter = league;
     };
 
     vm.filterRanking = function(group){
-      vm.users.forEach(element => {
-        // console.log(element.name)
-
-        // console.log(element.bets.matches);
-        // console.log(Object.values(element.bets.matches));
+      vm.users.forEach(player => {
+        // console.log(player.name)
+        // console.log(player.bets.matches);
+        // console.log(Object.values(player.bets.matches));
         var tmpScore = 0;
-        if(element.bets != undefined){
-          Object.values(element.bets.matches).forEach(match => {
+        if(player.bets && player.bets.matches){
+          Object.values(player.bets.matches).forEach(match => {
             if(match.points!=undefined){
               if((match.group == group) || (group =='Todas')){
-                // console.log(element.name + ' (' + element.uid + '): ' + match.round + ' -> ' + match.points);
-                // console.log(element.name + ': ' + match.home + 'x' + match.away + '-> ' + match.points);
+                // console.log(player.name + ' (' + player.uid + '): ' + match.round + ' -> ' + match.points);
+                // console.log(player.name + ': ' + match.home + 'x' + match.away + '-> ' + match.points);
                 tmpScore += match.points;
               }
             }
           });
         }
-        // console.log(element.name + '->' + tmpScore);
-        element.score = tmpScore;
+        // console.log(player.name + '->' + tmpScore);
+        player.score = tmpScore;
         
       });
     };

@@ -3,12 +3,12 @@
 
   angular.module('admin').controller('RankingController', RankingController);
 
-  RankingController.$inject = ['$window', 'userList', 'userService', 'adminService', 'scoreService', 'APP_CONFIG'];
+  RankingController.$inject = ['$window', 'userActiveList', 'userService', 'adminService', 'scoreService', 'APP_CONFIG'];
 
-  function RankingController($window, userList, userService, adminService, scoreService, APP_CONFIG) {
+  function RankingController($window, userActiveList, userService, adminService, scoreService, APP_CONFIG) {
     let vm = this;
     
-    vm.players = userList;
+    vm.players = userActiveList;
     vm.leagues = APP_CONFIG.leagues;
     vm.orderBy = 'name';
     vm.reverse = false;
@@ -16,6 +16,7 @@
     vm.phases = APP_CONFIG.phases;
     vm.userBets = {};
 
+    // console.log(vm.players);
 
     vm.getObjSize = function(obj){
       if (obj==null)
@@ -27,35 +28,38 @@
     vm.filterRanking = function(group){
       // console.log('filterRanking: ' + round);
 
-      vm.players.forEach(element => {
-        // console.log(element.name)
-
-        // console.log(element.bets.matches);
-        // console.log(Object.values(element.bets.matches));
+      vm.players.forEach(player => {
+        // console.log(player.name, player.bets.matches);
+        // console.log(Object.values(player.bets.matches));
         var tmpScore = 0;
-        if(element.bets != undefined){
-          Object.values(element.bets.matches).forEach(match => {
+        if(player.bets != undefined){
+          Object.values(player.bets.matches).forEach(match => {
             if(match.points!=undefined){
               if((match.group == group) || (group =='Todas')){
-                // console.log(element.name + ' (' + element.uid + '): ' + match.round + ' -> ' + match.points);
-                // console.log(element.name + ': ' + match.home + 'x' + match.away + '-> ' + match.points);
+                // console.log(player.name + ' (' + player.uid + '): ' + match.round + ' -> ' + match.points);
+                // console.log(player.name + ': ' + match.home + 'x' + match.away + '-> ' + match.points);
                 tmpScore += match.points;
               }
             }
           });
         }
-        // console.log(element.name + '->' + tmpScore);
-        element.totalScore = tmpScore;
+        // console.log(player.name + '->' + tmpScore);
+        player.totalScore = tmpScore;
         
       });
       
     };
 
     vm.resetRanking = function(){
-      vm.players.forEach(element => {
-        console.log(element.totalScore);
-        element.totalScore = 0;
-        userService.saveUser(element);
+      vm.players.forEach(player => {
+        console.log(player);
+        player.totalScore = 0;
+        if(player.bets && player.bets.matches){
+          Object.values(player.bets.matches).forEach(match => {
+            match.points = 0;
+          });
+        }
+        userService.saveUser(player);
       })
     };
 

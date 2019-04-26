@@ -24,7 +24,6 @@
       return users.$loaded()
       .then(ref => {
         // console.log('getUser',ref.$getRecord(uid));
-        
         return ref.$getRecord(uid);
       });
     }
@@ -66,24 +65,36 @@
       return users.$loaded();
     };
 
+    function getUserActiveList() {
+      var activeUsers = [];
+
+      return users.$loaded()
+      .then(users => {
+        // console.log('getUserActiveList', users);
+        users.forEach(user => {
+          // console.log(user);
+          if(user.active) activeUsers.push(user)
+        });
+        // console.log(activeUsers);
+        return activeUsers;
+      });
+    };
+
     function login(credentials) {
       console.log('userService.login', credentials);
-      let date = new Date(); 
-      // console.log(date);
+      let date = new Date();
 
       return auth.$signInWithEmailAndPassword(credentials.email, credentials.password)
       .then(data => {
-        console.log('data',data);
+        // console.log('data',data);
         return getUser(data.uid);
       })
       .then(user => {
-        console.log('user',user);
+        // console.log('user',user);
         if(user) {
           user.lastLogin = date.getTime();
-          // console.log('last login:', user.lastLogin)
           return saveUser(user);
         }
-        
       });
     }
 
@@ -108,9 +119,7 @@
           totalScore: 0,
           extraPoints: 0,
           exactResults: 0
-          
         };
-
         userObj[newUid] = newUser;
 
         return userObj.$save();
@@ -122,7 +131,8 @@
         return publicData.$add({
           uid: newUid,
           email: newEmail,
-          active: true,
+          name: newName,
+          // active: true,
           league: [newLeague],
           score: 0
         });
@@ -170,6 +180,7 @@
           admin: false,
           active: true,
           uid: newUid,
+          exactResults: 0,
           league: [pending.league]
         };
 
@@ -184,7 +195,7 @@
         return publicData.$add({
           uid: newUid,
           email: newEmail,
-          active: true,
+          // active: true,
           league: [pending.league],
           score: 0,
           exactResults: 0,
@@ -193,12 +204,11 @@
     }
 
     function saveUser(user) {
-      // console.log(user);
-      // console.log('saveUser: ' + user.name);
+      // console.log('saveUser: ', user);
 
       return users.$save(user)
       .then(ref => {
-        return usersPublic.$loaded();
+          return usersPublic.$loaded();
       })
       .then(publicData => {
         let found = publicData.find(item => {
@@ -206,26 +216,40 @@
         });
 
         if (!found) {
-          return publicData.$add({
-            name: user.name || null,
-            uid: user.uid,
-            score: user.totalScore || 0,
-            exactResults: user.exactResults || 0,
-            league: user.league,
-            bets: user.bets || null,
-            email: user.email || null,
-            active: user.active || true //If founded, set true
-          });
+          // console.log('!found');
+          if (user.active){
+            // console.log('active');
+            return publicData.$add({
+              name: user.name || null,
+              uid: user.uid,
+              score: user.totalScore || 0,
+              exactResults: user.exactResults || 0,
+              league: user.league,
+              bets: user.bets || null,
+              email: user.email || null,
+              // active: user.active || true //If founded, set true
+            })
+          } else {
+            // console.log('!active');
+            return [user]
+          }
         } else {
-          found.name = user.name || null;
-          found.score = user.totalScore || 0;
-          found.exactResults = user.exactResults;
-          found.league = user.league;
-          found.bets = user.bets || null;
-          found.email = user.email || null;
-          found.active = user.active || false; //fir not founded, set false
-
-          return publicData.$save(found);
+          // console.log('found');
+          if (user.active){
+            // console.log('active');
+            found.name = user.name || null;
+            found.score = user.totalScore || 0;
+            found.exactResults = user.exactResults || 0;
+            found.league = user.league;
+            found.bets = user.bets || null;
+            found.email = user.email || null;
+            // found.active = user.active || false; //fir not founded, set false
+  
+            return publicData.$save(found)
+          } else {
+            // console.log('!active');
+            return publicData.$remove(found)
+          }
         }
       });
     }
@@ -256,11 +280,6 @@
       return auth.$updatePassword(credentials.newPassword);
     }
 
-    function updateUser(credentials) {
-      console.log(credentials)
-      //return auth.$updateUser(credentials);
-    }
-
     return {
       public: usersPublic,
       login: login,
@@ -273,6 +292,7 @@
       saveUser: saveUser,
       removeUser: removeUser,
       getUserList: getUserList,
+      getUserActiveList, getUserActiveList,
       resetPassword: resetPassword,
       changePassword: changePassword
     };

@@ -68,8 +68,8 @@
       controller: 'RankingController',
       controllerAs: 'ranking',
       resolve: {
-        userList: userService => {
-          return userService.getUserList();
+        userActiveList: userService => {
+          return userService.getUserActiveList();
         },
         pendingList: adminService => {
           return adminService.getPendingList();

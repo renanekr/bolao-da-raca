@@ -16,11 +16,6 @@
   
     vm.promo = adminService.promo;
 
-
-    // vm.players.forEach(function(player, index) {
-    //   console.log(index, player.name, player.league);
-    // })
-
     vm.getUserTotalBets = function(uid) {
       var total;
       // return userService.getUserTotalBets(uid);

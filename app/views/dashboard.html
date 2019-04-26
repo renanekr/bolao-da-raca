@@ -34,43 +34,56 @@
 						<div class="panel-body" ng-class="{'bg-warning': !dashboard.user.bets}">
 							
 							<div class="match-entry" ng-repeat="match in dashboard.tour.data.matches | orderBy: 'datetime' : true | open: false | noResult | limitTo: 2 as currentMatches">
-								<span class="label label-danger" ng-show="dashboard.now > match.datetime - dashboard.timeLimit">ENCERRADO</span><small> {{match.datetime | date: 'dd/MM H:mm'}} | {{match.location}}</small><br>
+								<div id="admin-only" ng-hide="match.home.shortName == 'TE1' && !dashboard.user.admin ? true : false">
+								<!-- CASO TENHA UM JOGO DA EQUIPE DE TESTE1 (TE1) MOSTRAR APENAS PARA ADMINS -->
+
+									<div style="padding-bottom: 5px">
+										<span class="label label-danger" ng-show="dashboard.now > match.datetime - dashboard.timeLimit">ENCERRADO</span>
+										<small> {{match.datetime | date: 'dd/MM H:mm'}} | {{match.location}}</small>
+									</div>
+									<span ng-show="match.home.ISO!=''" class="flag-icon" ng-class="{'flag-icon-{{match.home.ISO}}': true}"></span>
+									<img ng-show="match.home.iconImg!=''" class="teamIcon25" ng-src="images/teams/{{match.home.iconImg}}" />
+									<a ui-sref="app.match({matchId: match.$id})">
+										<span class="hidden-xs">{{match.home.longName}} x {{match.away.longName}}</span>
+										<span class="visible-xs-inline">{{match.home.shortName}} x {{match.away.shortName}}</span>
+									</a>
+									<img ng-show="match.away.iconImg!=''" class="teamIcon25" ng-src="images/teams/{{match.away.iconImg}}" />
+									<span ng-show="match.away.ISO!=''" class="flag-icon" ng-class="{'flag-icon-{{match.away.ISO}}': true}"></span>
+						
+									<strong class="pull-right" ng-show="dashboard.user.bets.matches[match.$id]">
+										{{dashboard.user.bets.matches[match.$id].home}} x 
+										{{dashboard.user.bets.matches[match.$id].away}}
+									</strong>
+									<strong class="pull-right text-danger" ng-hide="dashboard.user.bets.matches[match.$id]">
+										<span class="glyphicon glyphicon-flash"></span>
+										<span class="hidden-xs">Não palpitou</span>
+									</strong>
+								</div> <!-- EOF admin-only -->
+							</div>
 								
-								<span ng-show="match.home.ISO!=''" class="flag-icon" ng-class="{'flag-icon-{{match.home.ISO}}': true}"></span>
-								<img ng-show="match.home.iconImg!=''" class="teamIcon25" ng-src="images/teams/{{match.home.iconImg}}" />
-								<a ui-sref="app.match({matchId: match.$id})">
+							<div class="match-entry" ng-repeat="match in dashboard.tour.data.matches | orderBy: 'datetime' | open: true | limitTo: 4 - currentMatches.length" ng-show="dashboard.user.bets">
+								<div id="admin-only" ng-hide="match.home.shortName == 'TE1' && !dashboard.user.admin ? true : false">
+								<!-- CASO TENHA UM JOGO DA EQUIPE DE TESTE1 (TE1) MOSTRAR APENAS PARA ADMINS -->
+			
+									<div style="padding-bottom: 5px">
+										<span class="label label-warning" ng-show="dashboard.now + 7200000 > match.datetime">ENCERRANDO (2 horas)</span>
+										<small> {{match.datetime | date: 'dd/MM H:mm'}} | {{match.location}}</small>
+									</div>
+									<span ng-show="match.home.ISO!=''" class="flag-icon" ng-class="{'flag-icon-{{match.home.ISO}}': true}"></span>
+									<img ng-show="match.home.iconImg!=''" class="teamIcon25" ng-src="images/teams/{{match.home.iconImg}}" />
 									<span class="hidden-xs">{{match.home.longName}} x {{match.away.longName}}</span>
 									<span class="visible-xs-inline">{{match.home.shortName}} x {{match.away.shortName}}</span>
-								</a>
-								<img ng-show="match.away.iconImg!=''" class="teamIcon25" ng-src="images/teams/{{match.away.iconImg}}" />
-								<span ng-show="match.away.ISO!=''" class="flag-icon" ng-class="{'flag-icon-{{match.away.ISO}}': true}"></span>
-					
-								<strong class="pull-right" ng-show="dashboard.user.bets.matches[match.$id]">
-									{{dashboard.user.bets.matches[match.$id].home}} x 
-									{{dashboard.user.bets.matches[match.$id].away}}
-								</strong>
-								<strong class="pull-right text-danger" ng-hide="dashboard.user.bets.matches[match.$id]">
-									<span class="glyphicon glyphicon-flash"></span>
-									<span class="hidden-xs">Não palpitou</span>
-								</strong>
-							</div>
-							
-							<div class="match-entry" ng-repeat="match in dashboard.tour.data.matches | orderBy: 'datetime' | open: true | limitTo: 4 - currentMatches.length" ng-show="dashboard.user.bets">
-								<span class="label label-warning" ng-show="dashboard.now + 7200000 > match.datetime">ENCERRANDO (2 horas)</span><small> {{match.datetime | date: 'dd/MM H:mm'}} | {{match.location}}</small><br>
-								<span ng-show="match.home.ISO!=''" class="flag-icon" ng-class="{'flag-icon-{{match.home.ISO}}': true}"></span>
-								<img ng-show="match.home.iconImg!=''" class="teamIcon25" ng-src="images/teams/{{match.home.iconImg}}" />
-								<span class="hidden-xs">{{match.home.longName}} x {{match.away.longName}}</span>
-								<span class="visible-xs-inline">{{match.home.shortName}} x {{match.away.shortName}}</span>
-								<img ng-show="match.away.iconImg!=''" class="teamIcon25" ng-src="images/teams/{{match.away.iconImg}}" />
-								<span ng-show="match.away.ISO!=''" class="flag-icon" ng-class="{'flag-icon-{{match.away.ISO}}': true}"></span>
-								<strong class="pull-right" ng-show="dashboard.user.bets.matches[match.$id]">
-									{{dashboard.user.bets.matches[match.$id].home}} x 
-									{{dashboard.user.bets.matches[match.$id].away}}
-								</strong>
-								<strong class="pull-right text-danger" ng-hide="dashboard.user.bets.matches[match.$id]">
-									<span class="glyphicon glyphicon-flash"></span>
-									<span class="hidden-xs">Não palpitou</span>
-								</strong>
+									<img ng-show="match.away.iconImg!=''" class="teamIcon25" ng-src="images/teams/{{match.away.iconImg}}" />
+									<span ng-show="match.away.ISO!=''" class="flag-icon" ng-class="{'flag-icon-{{match.away.ISO}}': true}"></span>
+									<strong class="pull-right" ng-show="dashboard.user.bets.matches[match.$id]">
+										{{dashboard.user.bets.matches[match.$id].home}} x 
+										{{dashboard.user.bets.matches[match.$id].away}}
+									</strong>
+									<strong class="pull-right text-danger" ng-hide="dashboard.user.bets.matches[match.$id]">
+										<span class="glyphicon glyphicon-flash"></span>
+										<span class="hidden-xs">Não palpitou</span>
+									</strong>
+								</div> <!-- EOF admin-only -->
 							</div>
 							
 							<div class="text-center">
@@ -80,7 +93,7 @@
 									<button class="btn btn-warning" ui-sref="app.myBets({filter: true})">Cadastrar Palpites!</button>
 								</div>
 								<button class="btn btn-warning" ui-sref="app.myBets({filter: true})" ng-show="dashboard.user.bets">Palpites Em Aberto</button>
-								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -152,6 +165,7 @@
 								ng-model="dashboard.betDefault"
 								eb-focus="dashboard.betDefaultEdit"
 								placeholder="Formato: 0x0 ou 00"
+								ng-blur="dashboard.updateBetDefault(dashboard.betDefault)"
 								ng-keypress="dashboard.submitBetDefaultOnEnter($event, dashboard.betDefault)">
 							<br>
 							<small>(Para salvar, pressione enter/ok/retorno no teclado)</small>
@@ -202,19 +216,19 @@
 					</h3>			
 				</div>
 				<div class="panel-body">
-						<form class="form-inline">
-								<div class="form-group">
-									<label for="filter">Filtrar por</label>
-									<select id="filter" ng-model="filter" ng-change="dashboard.filterRanking(filter)" class="form-control">
-										<option selected>Todas</option>
-										<option ng-repeat="phase in dashboard.phases">{{phase}}</option>
+					<form class="form-inline">
+						<div class="form-group">
+							<label for="filter">Filtrar por</label>
+							<select id="filter" ng-model="filter" ng-change="dashboard.filterRanking(filter)" class="form-control">
+								<option selected>Todas</option>
+								<option ng-repeat="phase in dashboard.phases">{{phase}}</option>
 
-										<!-- <option>Fase 2</option>
-										<option>Fase 3</option>
-										<option>Fase 4</option> -->
-									</select>
-								</div>
-							</form>
+								<!-- <option>Fase 2</option>
+								<option>Fase 3</option>
+								<option>Fase 4</option> -->
+							</select>
+						</div>
+					</form>
 					<table class="table table-sm table-striped table-dark table-responsive table-hover">
 						<thead>
 							<tr class="table-active">
@@ -226,17 +240,15 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>{{dashboard.tour.data.matches.match[0]}}</tr>
-							<tr ng-show="{{player.active}}" ng-repeat="player in dashboard.users | orderBy: ['score', 'exactResults'] : true | league: dashboard.leagueFilter track by player.uid" >
+							<!-- <tr>{{dashboard.tour.data.matches.match[0]}}</tr> -->
+							<tr ng-repeat="player in dashboard.users | orderBy: ['score', 'exactResults', 'name'] : true | league: dashboard.leagueFilter track by player.uid" >
 								<td>{{$index +1}}</td>
 								<!-- <td>
 									<span class="glyphicon glyphicon-chevron-up" style="color:green"></span>
 									<span class="glyphicon glyphicon-chevron-down" style="color:red"></span>
 									<span class="glyphicon glyphicon-stop" style="color:gray"></span>
 								</td> -->
-								<td ng-show="{{player.active}}">
-									<a ui-sref="app.public({uid: player.uid})">{{player.name ? player.name : (player.email ? player.email : player.uid)}}</a>
-								</td>
+								<td><a ui-sref="app.public({uid: player.uid})">{{player.name ? player.name : (player.email ? player.email : player.uid)}}</a></td>
 								<td>{{player.exactResults}}</td>
 								<td>{{player.score}}</td>
 							</tr>

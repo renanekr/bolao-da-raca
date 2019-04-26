@@ -30,9 +30,9 @@ tr:hover .glyphicon-pencil {
 }
 
 .match-block {
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 30px;
-  margin-top: 30px;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 5px;
+  margin-top: 10px;
 }
 
 .bet-input {
@@ -72,9 +72,9 @@ tr:hover .glyphicon-pencil {
   font-weight: bold;
 }
 
-.panel-body .btn {
+/* .panel-body .btn {
   margin-top: 15px;
-}
+} */
 
 .panel-body .empty-state-message {
   color: #888;
