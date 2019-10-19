@@ -21,6 +21,7 @@
     <!-- endbuild -->
     
     <!-- Google AdSense -->
+    <!--
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <script>
       (adsbygoogle = window.adsbygoogle || []).push({
@@ -28,7 +29,8 @@
         enable_page_level_ads: true
       });
     </script>
-
+  -->
+  
     <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-138897574-1"></script>
   <script>
@@ -62,8 +64,6 @@
     <div ui-view="content" class="content"></div>
     <div ng-include="'views/footer.html'"></div>
         
-
-
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
@@ -89,15 +89,28 @@
 
     <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
     <script>
+      var dev = false;
       // Initialize Firebase
-      var config = {
-        apiKey: "AIzaSyAmrt-JTjj4KrBlWeUDeqxEBZhbpwv2VyI",
-        authDomain: "bolao-da-raca-b8d39.firebaseapp.com",
-        databaseURL: "https://bolao-da-raca-b8d39.firebaseio.com",
-        projectId: "bolao-da-raca-b8d39",
-        storageBucket: "bolao-da-raca-b8d39.appspot.com",
-        messagingSenderId: "363375988544"
-      };
+      var config = {};
+      if (dev){
+        config = {
+          apiKey: "AIzaSyD5RinUiMlLu_qfALHLoCmuHmTVSd8Gtpw",
+          authDomain: "bolao-dev-3e365.firebaseapp.com",
+          databaseURL: "https://bolao-dev-3e365.firebaseio.com",
+          projectId: "bolao-dev-3e365",
+          storageBucket: "bolao-dev-3e365.appspot.com",
+          messagingSenderId: "841220046507"
+        };
+      } else {
+          config = {
+            apiKey: "AIzaSyAmrt-JTjj4KrBlWeUDeqxEBZhbpwv2VyI",
+            authDomain: "bolao-da-raca-b8d39.firebaseapp.com",
+            databaseURL: "https://bolao-da-raca-b8d39.firebaseio.com",
+            projectId: "bolao-da-raca-b8d39",
+            storageBucket: "bolao-da-raca-b8d39.appspot.com",
+            messagingSenderId: "363375988544"
+          };
+      }
       firebase.initializeApp(config);
     </script>
 

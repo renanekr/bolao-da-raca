@@ -58,11 +58,13 @@
     }
 
     function parseBet(bet, matchRound, matchGroup) {
+      //ALTERAÇÕES AQUI DEVE SER FEITAS TAMBÉM NO scoreService linha 55
       let regexp = new RegExp('^[0-9].*[0-9]$');
       let home;
       let away;
       let round;
       let group;
+      let defaultBet;
       let updated;
 
       bet = bet.trim();
@@ -74,6 +76,7 @@
         away = bet[bet.length - 1];
         round = matchRound;
         group = matchGroup;
+        defaultBet = false;
         updated = new Date().getTime();
       } else {
         throw new Error('O formato é inválido');
@@ -84,6 +87,7 @@
         away: away,
         round: round,
         group: group,
+        defaultBet: defaultBet,
         updated: updated
       };
     }

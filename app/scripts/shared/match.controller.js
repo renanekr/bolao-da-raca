@@ -50,10 +50,23 @@
         // console.log(thisUser);
         // console.log(thisUser.bets.matches);
         if (thisUser.bets && thisUser.bets.matches) {
-          prepUser.home = thisUser.bets.matches[match.$id].home;
-          prepUser.away = thisUser.bets.matches[match.$id].away;
-          prepUser.points = thisUser.bets.matches[match.$id].points;
-          console.log('prepUser', prepUser);
+          if(thisUser.bets.matches[match.$id]){
+            prepUser.home = thisUser.bets.matches[match.$id].home;
+            prepUser.away = thisUser.bets.matches[match.$id].away;
+            prepUser.points = thisUser.bets.matches[match.$id].points;
+            prepUser.defaultBet = thisUser.bets.matches[match.$id].defaultBet || false;
+            prepUser.updated = thisUser.bets.matches[match.$id].updated
+            // console.log('prepUser', prepUser);
+          } else {
+            console.log(prepUser.name + " não palpitou neste jogo.");
+            if (thisUser.bets.default){
+              console.log("Usando palpite padrão.")
+              prepUser.home = thisUser.bets.default.home;
+              prepUser.away = thisUser.bets.default.away;
+              prepUser.defaultBet = true;
+            }
+          }
+          
         } else {
           // console.log('zero points');
           prepUser.points = 0;
@@ -68,7 +81,6 @@
     vm.matchCss = function(points) {
       // console.log('matchCss', points);
       var cssClass = "label-";
-
       switch (points){
         case 15:
         case 12:
@@ -77,14 +89,15 @@
         case 9:
           cssClass = cssClass + "primary"
           break;
+        case 7:
         case 6:
-          cssClass = cssClass + "default"
+          cssClass = cssClass + "warning"
           break;
         case 4:
           cssClass = cssClass + "info"
           break;
         case 3:
-          cssClass = cssClass + "warning"
+          cssClass = cssClass + "default"
           break;
         default:
           cssClass = cssClass + "danger"

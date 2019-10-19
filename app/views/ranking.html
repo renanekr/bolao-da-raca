@@ -13,6 +13,7 @@
 			</select>
 			<button class="btn btn-success" ng-click="ranking.filterRanking(filter)">Filtrar</button>
 			<button class="btn btn-danger" ng-click="ranking.resetRanking()">Zerar Ranking</button>
+			<button class="btn btn-info" ng-click="ranking.orderRanking()">Ordenar Ranking</button>
 		</form>
 	</div>
 	<hr>
@@ -25,6 +26,7 @@
 				   </tr>
 				   <tr>
 					   <th scope="col">#</th>
+					   <th scope="col">&nbsp;</th>
 					   <th scope="col">Nome</th>
 					   <th scope="col">Palpites</th>
 					   <th scope="col">Cravadas</th>
@@ -32,8 +34,14 @@
 				   </tr>
 			   </thead>
 			   <tbody>
-				   <tr ng-repeat="player in ranking.players | orderBy: ['totalScore', 'exactResults'] : true | league: ranking.leagueFilter track by player.uid" >
+				   <tr ng-repeat="player in ranking.players | orderBy: ['-totalScore', '-exactResults', name] : false | league: ranking.leagueFilter track by player.uid" >
 					   <th scope="row">{{$index +1}}</th>
+					   <td>
+							<div ng-class="{'text-success': player.ranking.variation > 0, 'text-danger': player.ranking.variation < 0, 'text-muted': player.ranking.variation == 0}">
+								<small>{{player.ranking.variation}}</small>
+								<span class="glyphicon" ng-class="{'glyphicon-chevron-up': player.ranking.variation > 0, 'glyphicon-chevron-down': player.ranking.variation < 0, 'glyphicon-stop': player.ranking.variation == 0}"></span>
+							</div>
+					   </td>
 					   <td>{{player.name}}</td>
 					   <td>{{ranking.getObjSize(player.bets.matches)}} <small>(Ver)</small></td>
 					   <!-- <td>{{ranking.filterScore(player, filter)}}</td> -->

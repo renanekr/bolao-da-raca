@@ -48,17 +48,32 @@
 
     function updateMatchScore(user, match) {
       // console.log('updateMatchScore: ' + user.name)
-      if( user.name != "Renan") {
-        return user;
-      }
       if (!user.bets || !user.bets.matches) {
         return user;
       }
 
+      //Caso não tenha palpite, tentar usar o padrão
+      if (!user.bets.matches[match.$id]){
+        console.log(user.name + " não palpitou na partida " + match.$id);
+        // console.log(match.datetime);
+        if (user.bets.default){
+          console.log("Usando palpite padrão", user.bets.default);
+          user.bets.matches[match.$id] = {
+            home: user.bets.default.home,
+            away: user.bets.default.away,
+            round: match.round,
+            group: match.group,
+            defaultBet: true,
+            updated: match.datetime
+          }
+        }
+      }
       if (user.bets.matches[match.$id] && match.result) {
         // console.log('points = calculateScore');
         user.bets.matches[match.$id].points = calculateScore(user, match.result, user.bets.matches[match.$id]);
         user.bets.matches[match.$id].exactResult = exactResult;
+        user.bets.matches[match.$id].round = match.round;
+        user.bets.matches[match.$id].group = match.group;
 
       } else if (user.bets.matches[match.$id]) {
         // console.log('points = null');
@@ -80,7 +95,7 @@
     */
 
     function calculateScore(user, result, bet) {
-      // console.log('calculateScore', user);
+      console.log('calculateScore ' + user.name, user);
       let score = 0;
       let matchScore = 0;
       exactResult = false;
@@ -99,36 +114,36 @@
 
         if (matchWinner === betWinner) {
           //Acerto do resultado (vitoria / empate) = 3 pontos
-          console.log('result');
+          // console.log('result');
           score += rules.result;
 
         } 
         if (result.home === bet.home && result.away === bet.away) {
           //Acerto do placar cravado = 12 ou 15 (mais de X gols rules.matchScore)
-          console.log('exactResult', score);
+          // console.log('exactResult', score);
           score += matchScore >= rules.matchBonusGoals ? rules.exactResult + rules.exactResultBonus : rules.exactResult;
           exactResult = true;
         }
         //if (matchWinner != 'draw' && 
         if (matchWinner != 'draw' && exactResult === false){
           //Resultado não é empate
-          console.log('NOT draw');
+          // console.log('NOT draw');
 
           if (matchWinner === betWinner && ((result.home - result.away) === (bet.home - bet.away))) {
             //Acerto da diferença de gols (com exceção ao empate) = 4 (3+1) 
-            console.log('diffScore');
+            // console.log('diffScore');
             score += rules.resultDifScore
   
           };
           console.log('placar', result[matchWinner], bet[matchWinner]);
           if (matchWinner === betWinner && result[matchLoser][0] === bet[matchLoser][0]) {
             //Acerto do placar do perdedor = 6 (3+3)
-            console.log('loserScore');
+            // console.log('loserScore');
             score += rules.loserScore;
           }
           if (matchWinner === betWinner && result[matchWinner][0] === bet[matchWinner][0]) {
             //Acerto do placar do vencedor = 9 (6+3)
-            console.log('winnerScore');
+            // console.log('winnerScore');
             score += rules.winnerScore;
           }
         }else{
@@ -162,7 +177,6 @@
     }
     function decideLoser(result) {
       let loser;
-
       loser = decideWinner(result) === 'home' ? 'away' : 'home';
 
       return loser;
@@ -184,7 +198,8 @@
         }, 0);
         let extraScore = user.extraPoints || 0;
         user.totalScore = score + extraScore;
-        
+        // console.log('getTotalScore', user.name, 'totalScore', user.totalScore);
+
         //Atualiza total de cravadas para fins e desempate
         let exactResults = matches.reduce((prev, cur) => {
           if (cur.exactResult) {
@@ -193,9 +208,10 @@
           return prev;
         }, 0);
         user.exactResults = exactResults;
-
+        // console.log('getTotalScore', user.name, 'exactResults', user.exactResults);
         return $q.resolve(user);
       });
     }
+
   }
 })();

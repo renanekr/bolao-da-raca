@@ -7,6 +7,7 @@
 
     // Firebase ref url
     fbUrl: 'https://bolao-da-raca-b8d39.firebaseio.com/',
+    // fbUrl: 'https://bolao-dev-3e365.firebaseio.com/',
 
     // Closing time before match start in ms
     timeLimit: 1800000,

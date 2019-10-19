@@ -1,7 +1,6 @@
 <div class="container">
 	<div class="row">
 		<!-- 	<a ng-click="matches.updateResults()">Atualizar Ranking</a> -->
-		<button class="btn btn-success" ng-click="matches.updateResults()">Atualizar Ranking</button>
 		<div class="col-xs-12" ng-show="matches.uploadForm">
 			<h4>Importar partidas</h4>
 			<form name="matchesForm" ng-submit = "matches.upload(matches.form.list, matchesForm)">
@@ -23,10 +22,16 @@
 			</form>
 		</div>
 		<div class="col-xs-12" ng-hide="matches.uploadForm">
-			<form>
-				<div class="form-group">
-					<label for="filter">Filtro</label>
-					<input type="text" class="form-control" name="filter" ng-model = "matches.table.filter" placeholder="Digite o nome longo ou curto da equipe"></div>
+			<form class="form-inline">
+				<div class="form-row">
+					<div class="col-xs-8">
+						<label for="filter">Filtro: </label>
+						<input type="text" class="form-control" name="filter" ng-model = "matches.table.filter" placeholder="Digite o nome longo ou curto da equipe">
+					</div>
+					<div class="col-xs-4">
+						<button class="btn btn-success" ng-click="matches.updateResults()">Atualizar Ranking</button>
+					</div>
+				</div>
 			</form>
 			<table class="table table-hover">
 				<thead>

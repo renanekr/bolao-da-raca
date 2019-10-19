@@ -166,28 +166,48 @@
       
       data.ranking.$loaded()
       .then(ref => {
-        lastUpdate = ref.$getRecord('lastUpdate')['$value'];
+        console.log(ref)
+        lastUpdate = ref.$getRecord('updated')['$value'];
         console.log(lastUpdate);
-        return lastUpdate;
       });
       
-    }
+    };
+    function setRankingLastUpdate(){
+      console.log('setRankingLastUpdate');
+      
+      // data.ranking.$loaded()
+      // .then(ref => {
+      //   console.log(ref)
+      //   lastUpdate = ref.$getRecord('updated')['$value'];
+      //   console.log(lastUpdate);
+      // })
+
+      // .then(teams => {
+      //   let index = teams.$indexFor(team.$id);
+
+      //   teams[index] = team;
+
+      //   return teams.$save(index);
+      // });
+      
+    };
+
     function updateDate(match, date) {
       match.datetime = date.getTime();
       return saveMatch(match)
     };
     function updateResult(match, result) {
-      // console.log('Tour - updateResult');
+      console.log('Tour - updateResult');
+
+      getRankingLastUpdate();
+
       let regexp = new RegExp('^[0-9].*[0-9]$');
 
       // console.log(data.ranking)
-
       match.result = {};
-
       if (result) {
         result = result.trim();
       }
-
       if (!regexp.test(result) && result) {
         let error = new Error('O primeiro e último caractere do resultado devem ser o números');
 

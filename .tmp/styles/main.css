@@ -42,7 +42,9 @@ tr:hover .glyphicon-pencil {
 .player-entry {
   line-height: 2em;
 }
-
+.player-entry-bold {
+  font-weight:bold;
+}
 .player-position {
   background:none repeat scroll 0 0 #C0C0C0;
   color:#FFFFFF;
@@ -54,6 +56,9 @@ tr:hover .glyphicon-pencil {
   line-height:28px;
   text-align:center;
   width:28px;border-radius:21px;
+}
+.player-me {
+  background:none repeat scroll 0 0 green;
 }
 
 .match-entry {

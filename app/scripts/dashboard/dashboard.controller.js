@@ -20,7 +20,6 @@
     vm.betDefaultHist;
     vm.betDefaultEdit = false;
     vm.phases = APP_CONFIG.phases;
-
     vm.now = new Date().getTime();
 
     // vm.rankingLastUpdate = tournamentService.getRankingLastUpdate()
@@ -30,8 +29,57 @@
     // console.log('DASH vm.rankingLastUpdate: ' + vm.rankingLastUpdate);
 
     $interval(() => {
+      //Update time every minute
       vm.now = new Date().getTime();
     }, 10000);
+
+    
+/*
+    $interval(() => {
+      console.log("counter");
+
+      // console.log("recuperar datas");
+      // $("span[id^='match-datetime']").each(function() {
+      //   vm.nextMatches.push($(this).text())
+      // })
+      // console.log( "data", vm.nextMatches)
+      console.log(vm.tour);
+
+      var counter;
+      var countDownDate = $('#-Ld73hOkv92us2enU-zg-date').text();
+      console.log(countDownDate);
+
+      // Update the count down every 1 second
+      console.log("update countdown");
+
+      // Get todays date and time
+      var now = new Date().getTime();
+          
+      // Find the distance between now and the count down date
+      var distance = countDownDate - now;
+          
+      // Time calculations for days, hours, minutes and seconds
+      //var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+          
+      // Output the result in an element with id="demo"
+      if (hours < 5)
+        document.getElementById("-Ld73hOkv92us2enU-zg-label").innerHTML = hours + ":" + minutes + ":" + seconds;
+      else
+        document.getElementById("-Ld73hOkv92us2enU-zg-label").innerHTML = hours + ":" + minutes + ":" + seconds;
+      
+      //counter = hours + ":" + minutes + ":" + seconds;
+          
+      // If the count down is over, write some text 
+      // if (distance < 0) {
+      //   clearInterval(x);
+      //   document.getElementById("demo").innerHTML = "EXPIRED";
+      // }
+      console.log(counter);
+    }, 1000);
+*/
 
     // console.log('user.alerts', user.alerts);
     // console.log('user.alerts.ruleAlert', user.alerts.ruleAlert);

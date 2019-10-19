@@ -3,9 +3,9 @@
 
   angular.module('admin').controller('RankingController', RankingController);
 
-  RankingController.$inject = ['$window', 'userActiveList', 'userService', 'adminService', 'scoreService', 'APP_CONFIG'];
+  RankingController.$inject = ['$window', '$filter', 'userActiveList', 'userService', 'adminService', 'scoreService', 'APP_CONFIG'];
 
-  function RankingController($window, userActiveList, userService, adminService, scoreService, APP_CONFIG) {
+  function RankingController($window, $filter, userActiveList, userService, adminService, scoreService, APP_CONFIG) {
     let vm = this;
     
     vm.players = userActiveList;
@@ -58,10 +58,35 @@
           Object.values(player.bets.matches).forEach(match => {
             match.points = 0;
           });
+          player.ranking = {};
         }
         userService.saveUser(player);
       })
     };
+
+    vm.orderRanking = function () {
+      // console.log(vm.players);
+      vm.players = $filter('orderBy')(vm.players, ['-totalScore', '-exactResults', 'name'], false);
+      // console.log(vm.players);
+
+      vm.players.forEach((player, index) => {
+        console.log(player.name, player.totalScore, index);
+        console.log(player.ranking);
+        player.ranking = player.ranking || {};
+        player.ranking.last = player.ranking.current || index+1;
+        player.ranking.current = index+1;
+        player.ranking.variation = player.ranking.current && player.ranking.last ? player.ranking.last - player.ranking.current : 0;
+        // player.ranking = {
+        //   last: player.ranking.current || index+1,
+        //   current: index+1,
+        //   variation: player.ranking.current - player.ranking.last
+        // };
+        console.log(player.ranking);
+        // console.log(player);
+        userService.saveUser(player);
+      });
+
+    }
 
   }
 })();

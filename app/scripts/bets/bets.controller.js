@@ -88,5 +88,34 @@
         vm.matchBet[matchId] = bet.home + "x" + bet.away;
       }
     };
+
+    vm.matchCss = function(points) {
+      // console.log('matchCss', points);
+      var cssClass = "label-";
+
+      switch (points){
+        case 15:
+        case 12:
+          cssClass = cssClass + "success"
+          break;
+        case 9:
+          cssClass = cssClass + "primary"
+          break;
+        case 6:
+          cssClass = cssClass + "default"
+          break;
+        case 4:
+          cssClass = cssClass + "info"
+          break;
+        case 3:
+          cssClass = cssClass + "warning"
+          break;
+        default:
+          cssClass = cssClass + "danger"
+          break;
+      };
+
+      return cssClass;
+    }
   }
 })();

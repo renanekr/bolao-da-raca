@@ -45,14 +45,15 @@
     };
 
     function getUserMatchBets(uid) {
-      // console.log(uid);
-      // console.log(APP_CONFIG.fbUrl + 'users/' + uid + '/bets/matches');
+      // console.log('[' + uid + ']');
+      // console.log('getUserMatchBets', APP_CONFIG.fbUrl + 'users/' + uid + '/bets/matches');
       
       // let matchesRef = new Firebase(APP_CONFIG.fbUrl + 'users/' + uid + '/bets/matches');
       let matchesRef = firebase.database().ref('users/' + uid + '/bets/matches')
       let matches = $firebaseArray(matchesRef);
 
       if (matches) {
+        // console.log(uid, matches);
         return matches.$loaded();
       } else {
         let error = ("Falha ao carregar palpites");
@@ -205,6 +206,7 @@
 
     function saveUser(user) {
       // console.log('saveUser: ', user);
+      let uName = user.name || "SEM NOME";
 
       return users.$save(user)
       .then(ref => {
@@ -216,9 +218,9 @@
         });
 
         if (!found) {
-          // console.log('!found');
+          // console.log(uName + ' !found');
           if (user.active){
-            // console.log('active');
+            // console.log(uName + ' active');
             return publicData.$add({
               name: user.name || null,
               uid: user.uid,
@@ -230,24 +232,25 @@
               // active: user.active || true //If founded, set true
             })
           } else {
-            // console.log('!active');
+            // console.log(uName + ' !active');
             return [user]
           }
         } else {
-          // console.log('found');
+          // console.log(uName + ' found');
           if (user.active){
-            // console.log('active');
+            // console.log(uName + ' active');
             found.name = user.name || null;
             found.score = user.totalScore || 0;
             found.exactResults = user.exactResults || 0;
             found.league = user.league;
             found.bets = user.bets || null;
             found.email = user.email || null;
+            found.ranking = user.ranking || null;
             // found.active = user.active || false; //fir not founded, set false
   
             return publicData.$save(found)
           } else {
-            // console.log('!active');
+            // console.log(uName + ' !active');
             return publicData.$remove(found)
           }
         }

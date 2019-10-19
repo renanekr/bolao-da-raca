@@ -56,10 +56,23 @@
 				</span>
 
 				<span class="pull-right" ng-show="match.current.status === 'running'">
-					{{user.home}} x {{user.away}}
+					<span uib-tooltip="Palpite Padrão utilizado nesta partida" ng-show="user.defaultBet" class="label label-info">
+						<span class="glyphicon glyphicon-pushpin"></span>
+						{{user.home}} x {{user.away}}
+					</span> 
+					<span uib-tooltip="Atualizado: {{user.updated | date: 'dd/MM/yyyy HH:mm:ss'}}" ng-hide="user.defaultBet">
+						{{user.home}} x {{user.away}}
+					</span>
 				</span>
 				<small ng-show="match.current.status === 'closed' && user.home==null"><div>Palpite não informado</div></small>
-				<small ng-show="match.current.status === 'closed' && user.home!=null"><div>Palpite: {{user.home}} x {{user.away}}</div></small>
+				<small ng-show="match.current.status === 'closed' && user.home!=null">
+					<div>
+						<h6 class="text-warning">Palpite{{user.defaultBet ? ' padrão' : ''}}: {{user.home}} x {{user.away}}</h6>
+						<small>(atualizado: {{user.updated | date: 'dd/MM/yyyy HH:mm:ss'}})</small>
+						<span ng-show="user.defaultBet" class="glyphicon glyphicon-pushpin"></span>
+					</div>
+					
+				</small>
 			</h4>
 		</div>
 	</div>
